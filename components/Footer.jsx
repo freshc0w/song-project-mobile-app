@@ -8,7 +8,7 @@ import MusicAtLocationPage from '../pages/MusicAtLocationPage';
 import PlaySamplePage from '../pages/PlaySamplePage';
 import ProfilePage from '../pages/ProfilePage';
 
-import { tabBarOptions, allTabs } from '../config/baseConfig';
+import { tabBarOptions, allTabs, icons } from '../config/baseConfig';
 
 const Tab = createBottomTabNavigator();
 
@@ -17,11 +17,12 @@ const Footer = () => {
 
 	return (
 		<Tab.Navigator initialRouteName="Map">
-			{Object.keys(allTabs).map(tab => (
+			{Object.keys(allTabs).map((tab, idx) => (
 				<Tab.Screen
+          key={idx}
 					name={tab}
 					children={() => allTabs[tab]}
-					options={tabBarOptions}
+					options={() => tabBarOptions(icons[tab], isDark)}
 				/>
 			))}
 		</Tab.Navigator>
