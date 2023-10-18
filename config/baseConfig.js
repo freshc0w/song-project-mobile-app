@@ -1,9 +1,10 @@
-import { Image, View } from 'react-native';
+import { Image, View, Text } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { colors, styles } from '../styles/styles';
 import MapPage from '../pages/MapPage';
 import ProfilePage from '../pages/ProfilePage';
 import MusicAtLocationPage from '../pages/MusicAtLocationPage';
+
 
 export const icons = {
 	Profile: require('../assets/tab-profile-white.png'),
@@ -17,57 +18,45 @@ export const allTabs = {
 	Profile: <ProfilePage />,
 };
 
-export const tabBarOptions = (iconSrc, middle) => {
+export const tabBarOptions = (iconSrc, middle, nearbyMusic) => {
+	middle && console.log('NEARBY MUSIC:', nearbyMusic);
 	return {
 		tabBarIcon: ({ size, focused, color }) => {
 			return (
-				<Image
+				<View
 					style={{
-						width: middle ? size * 5 : size,
-						height: size,
-						tintColor: focused
-							? colors.whiteColor
-							: colors.whiteColorTranslucent,
-						resizeMode: 'contain',
+						display: 'flex',
+						justifyContent: 'center',
+						alignContent: 'center',
+						alignItems: 'center',
 					}}
-					source={iconSrc}
-				/>
+				>
+					<Image
+						style={{
+							width: middle ? size * 5 : size,
+							height: size,
+							tintColor: focused
+								? colors.whiteColor
+								: colors.whiteColorTranslucent,
+							resizeMode: 'contain',
+						}}
+						source={iconSrc}
+					/>
+					{middle && nearbyMusic && (
+						<Text
+							style={{
+								textAlign: 'center',
+								color: focused
+									? colors.whiteColor
+									: colors.whiteColorTranslucent,
+								fontSize: 10,
+							}}
+						>
+							There's music nearby!
+						</Text>
+					)}
+				</View>
 			);
 		},
 	};
 };
-
-// export const tabBarOptions = iconSrc => {
-// 	return {
-// 		tabBarStyle: {
-// 			display: 'flex',
-// 			justifyContent: 'center',
-// 			alignItems: 'center',
-// 		},
-// 		tabBarIcon: ({ size, focused, color }) => {
-// 			return (
-// 				iconSrc && (
-// 					<View
-// 						style={{
-// 							alignItems: 'center',
-// 							justifyContent: 'center',
-// 							height: 80,
-// 							width: 50,
-// 						}}
-// 					>
-// 						<Image
-// 							style={{
-// 								height: size,
-// 								tintColor: focused
-// 									? colors.whiteColor
-// 									: colors.whiteColorTranslucent,
-// 								resizeMode: 'contain',
-// 							}}
-// 							source={iconSrc}
-// 						/>
-// 					</View>
-// 				)
-// 			);
-// 		},
-// 	};
-// };

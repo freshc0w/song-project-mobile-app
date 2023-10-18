@@ -1,20 +1,23 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import { styles } from './styles/styles';
+import { Text, View } from 'react-native';
+import { createContext, useState } from 'react';
 
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import MapPage from './pages/MapPage';
-import MusicAtLocationPage from './pages/MusicAtLocationPage';
-import PlaySamplePage from './pages/PlaySamplePage';
-import ProfilePage from './pages/ProfilePage';
+// import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Footer from './components/Footer';
 
+export const NearbyMusicContext = createContext({
+	nearbyMusic: null,
+	setNearbyMusic: () => {},
+});
 
 const App = () => {
+	const [nearbyMusic, setNearbyMusic] = useState(null);
+	const value = { nearbyMusic, setNearbyMusic };
 	return (
 		<NavigationContainer>
-			<Footer />
+			<NearbyMusicContext.Provider value={value}>
+				<Footer />
+			</NearbyMusicContext.Provider>
 		</NavigationContainer>
 	);
 };

@@ -1,19 +1,19 @@
-import { View, Image } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { styles, colors } from '../styles/styles';
+import { colors } from '../styles/styles';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import MapPage from '../pages/MapPage';
 import MusicAtLocationPage from '../pages/MusicAtLocationPage';
-import PlaySamplePage from '../pages/PlaySamplePage';
 import ProfilePage from '../pages/ProfilePage';
 
-import { tabBarOptions, allTabs, icons } from '../config/baseConfig';
+import { tabBarOptions, icons } from '../config/baseConfig';
+import { useContext } from 'react';
+import { NearbyMusicContext } from '../App';
 
 const Tab = createBottomTabNavigator();
 
 const Footer = () => {
-
+	const { nearbyMusic, setNearbyMusic } = useContext(NearbyMusicContext);
 	return (
 		<Tab.Navigator
 			screenOptions={{
@@ -37,7 +37,9 @@ const Footer = () => {
 			<Tab.Screen
 				name="Music At Location"
 				children={() => <MusicAtLocationPage />}
-				options={() => tabBarOptions(icons['Music At Location'], true)}
+				options={() =>
+					tabBarOptions(icons['Music At Location'], true, nearbyMusic)
+				}
 			/>
 			<Tab.Screen
 				name="Profile"
@@ -47,4 +49,5 @@ const Footer = () => {
 		</Tab.Navigator>
 	);
 };
+
 export default Footer;
