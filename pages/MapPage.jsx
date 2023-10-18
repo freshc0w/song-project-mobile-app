@@ -1,12 +1,12 @@
-import { Text, View } from 'react-native';
-import MapView from 'react-native-maps';
+import { View } from 'react-native';
+import MapView, { Circle } from 'react-native-maps';
 import { PROVIDER_GOOGLE } from 'react-native-maps';
 import { useEffect, useState } from 'react';
 import * as Location from 'expo-location';
 
-import { isDark, styles } from '../styles/styles';
+import { isDark, styles, darkMapStyle } from '../styles/styles';
 import { locations } from '../config/locations';
-import { findNearest } from 'geolib';
+import { findNearest, isPointWithinRadius } from 'geolib';
 
 const MapPage = () => {
 	const formattedLocations = locations.map(location => {
@@ -28,7 +28,7 @@ const MapPage = () => {
 			longitude: 153.0954163,
 			// Starts at "Indooroopilly Shopping Centre"
 		},
-		nearbyLocation: {},
+		viableLocations: [],
 	};
 
 	const [mapState, setMapState] = useState(initialMapState);
@@ -44,21 +44,32 @@ const MapPage = () => {
 		reqPermission();
 	}, []);
 
-	// user location is formated lat long
-	const findClosestLocation = userLocation => {
-		const nearestCoords = findNearest(
-			userLocation,
-			mapState.locations.map(location => location.coords)
+	// find available locations
+	const findViableLocations = (userLocation, radius) => {
+		const locationsWithinRange = mapState.locations.filter(location =>
+			isPointWithinRadius(location.coords, userLocation, radius)
 		);
 
-		const nearestLocation = mapState.locations.find(location => {
-			return (
-				location.coords.latitude === nearestCoords.latitude &&
-				location.coords.longitude === nearestCoords.longitude
-			);
-		});
+		console.log('locations within range', locationsWithinRange);
 
-		return nearestLocation;
+		return locationsWithinRange;
+	};
+
+	const findNearestLocation = (userLocation, viableLocations) => {
+		if (!viableLocations.length) return null;
+		const nearestCoords = findNearest(
+			userLocation,
+			viableLocations.map(location => location.coords)
+		);
+
+		console.log('nearest coords', nearestCoords);
+
+		const location = mapState.locations.find(
+			location => location.coords === nearestCoords
+		);
+
+		console.log('nearest location', location);
+		return location;
 	};
 
 	useEffect(() => {
@@ -73,18 +84,23 @@ const MapPage = () => {
 						latitude: location.coords.latitude,
 						longitude: location.coords.longitude,
 					};
-					const nearbyLocation = findClosestLocation(userLocation);
+					const viableLocations = findNearestLocation(
+						userLocation,
+						findViableLocations(userLocation, 100)
+					);
 					// update map state
 					setMapState({
 						...mapState,
 						userLocation,
-						nearbyLocation,
+						viableLocations,
 					});
 				}
 			);
-			return () => {
-				subscription && subscription.remove();
-			};
+			// return () => {
+			// 	if (subscription) {
+			// 		subscription.remove();
+			// 	}
+			// };
 		}
 	}, [mapState.locationPermission]);
 
@@ -93,14 +109,27 @@ const MapPage = () => {
 			<MapView
 				camera={{
 					center: mapState.userLocation,
-          pitch: 0, // 3d angle
-          heading: 0, // compass direction
-          zoom: 15, // android only
+					pitch: 0, // 3d angle
+					heading: 0, // compass direction
+					zoom: 15, // android only
 				}}
-        showsUserLocation={mapState.locationPermission}
+				showsUserLocation={mapState.locationPermission}
 				style={styles.mapView}
 				provider={PROVIDER_GOOGLE}
-			></MapView>
+				customMapStyle={isDark ? darkMapStyle : null}
+				// customMapStyle={darkMapStyle}
+			>
+				{mapState.locations.map(location => (
+					<Circle
+						key={location.id}
+						center={location.coords}
+						radius={100}
+						strokeWidth={3}
+						strokeColor="#A42DE8"
+						fillColor={isDark ? 'rgba(128,0,128,0.5)' : 'rgba(210,169,210,0.5)'}
+					/>
+				))}
+			</MapView>
 		</View>
 	);
 };
