@@ -8,11 +8,17 @@ export const icons = {
 	profile: require('../assets/tab-profile-white.png'),
 };
 
-export const allTabs = [
-	{ Map: <MapPage /> },
-	{ Profile: <ProfilePage /> },
-	{ 'Music At Location': <MusicAtLocationPage /> },
-];
+// export const allTabs = [
+// 	{ Map: <MapPage /> },
+// 	{ Profile: <ProfilePage /> },
+// 	{ 'Music At Location': <MusicAtLocationPage /> },
+// ];
+
+export const allTabs = {
+	Map: <MapPage />,
+	Profile: <ProfilePage />,
+	'Music At Location': <MusicAtLocationPage />,
+};
 
 export const tabBarOptions = {
 	tabBarBackground: () => (
