@@ -1,6 +1,6 @@
-import { Image } from 'react-native';
+import { Image, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { colors } from '../styles/styles';
+import { colors, styles } from '../styles/styles';
 import MapPage from '../pages/MapPage';
 import ProfilePage from '../pages/ProfilePage';
 import MusicAtLocationPage from '../pages/MusicAtLocationPage';
@@ -8,6 +8,7 @@ import MusicAtLocationPage from '../pages/MusicAtLocationPage';
 export const icons = {
 	Profile: require('../assets/tab-profile-white.png'),
 	Map: require('../assets/tab-map-white.png'),
+	'Music At Location': require('../assets/logo-white.png'),
 };
 
 export const allTabs = {
@@ -16,50 +17,57 @@ export const allTabs = {
 	Profile: <ProfilePage />,
 };
 
-// export const tabBarOptions = {
-// 	tabBarBackground: () => (
-// 		<LinearGradient
-// 			colors={[colors.purpleColorLighter, colors.blueColorDarker]}
-// 			style={{ flex: 1 }}
-// 			start={{ x: 0, y: 0 }}
-// 			end={{ x: 0, y: 1 }}
-// 		/>
-// 	),
-// 	tabBarIcon: ({ size, focused, color }) => {
-// 		return (
-// 			<Image
-// 				style={{ width: size, height: size }}
-// 				source={icon}
-// 			/>
-// 		);
-// 	},
-// };
-
-export const tabBarOptions = (iconSrc, isDark) => {
+export const tabBarOptions = (iconSrc, middle) => {
 	return {
-		tabBarBackground: () => (
-			<LinearGradient
-				colors={[colors.purpleColorLighter, colors.blueColorDarker]}
-				style={{ flex: 1 }}
-				start={{ x: 0, y: 0 }}
-				end={{ x: 0, y: 1 }}
-			/>
-		),
 		tabBarIcon: ({ size, focused, color }) => {
 			return (
-				iconSrc && (
-					<Image
-						style={{
-							width: size,
-							height: size,
-							tintColor: focused
-								? colors.whiteColor
-								: colors.whiteColorTranslucent,
-						}}
-						source={iconSrc}
-					/>
-				)
+				<Image
+					style={{
+						width: middle ? size * 5 : size,
+						height: size,
+						tintColor: focused
+							? colors.whiteColor
+							: colors.whiteColorTranslucent,
+						resizeMode: 'contain',
+					}}
+					source={iconSrc}
+				/>
 			);
 		},
 	};
 };
+
+// export const tabBarOptions = iconSrc => {
+// 	return {
+// 		tabBarStyle: {
+// 			display: 'flex',
+// 			justifyContent: 'center',
+// 			alignItems: 'center',
+// 		},
+// 		tabBarIcon: ({ size, focused, color }) => {
+// 			return (
+// 				iconSrc && (
+// 					<View
+// 						style={{
+// 							alignItems: 'center',
+// 							justifyContent: 'center',
+// 							height: 80,
+// 							width: 50,
+// 						}}
+// 					>
+// 						<Image
+// 							style={{
+// 								height: size,
+// 								tintColor: focused
+// 									? colors.whiteColor
+// 									: colors.whiteColorTranslucent,
+// 								resizeMode: 'contain',
+// 							}}
+// 							source={iconSrc}
+// 						/>
+// 					</View>
+// 				)
+// 			);
+// 		},
+// 	};
+// };

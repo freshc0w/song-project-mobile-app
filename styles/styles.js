@@ -125,6 +125,10 @@ export const styles = {
         width: "50%",
         marginLeft: "25%",
         // marginTop: -(height / 12)
+    },
+    // added
+    middleTabIcon: {
+      width: 100,
     }
 }
 

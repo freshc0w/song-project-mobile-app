@@ -16,17 +16,36 @@ const Footer = () => {
 	const isDark = colorScheme === 'dark';
 
 	return (
-		<Tab.Navigator initialRouteName="Map">
-			{Object.keys(allTabs).map((tab, idx) => (
-				<Tab.Screen
-          key={idx}
-					name={tab}
-					children={() => allTabs[tab]}
-					options={() => tabBarOptions(icons[tab], isDark)}
-				/>
-			))}
+		<Tab.Navigator
+			screenOptions={{
+				tabBarBackground: () => (
+					<LinearGradient
+						colors={[colors.purpleColorLighter, colors.blueColorDarker]}
+						style={{ flex: 1 }}
+						start={{ x: 0, y: 0 }}
+						end={{ x: 0, y: 1 }}
+					/>
+				),
+				tabBarActiveBackgroundColor: colors.blackColorTranslucentLess,
+				tabBarShowLabel: false,
+			}}
+		>
+			<Tab.Screen
+				name="Map"
+				children={() => <MapPage />}
+				options={() => tabBarOptions(icons.Map)}
+			/>
+			<Tab.Screen
+				name="Music At Location"
+				children={() => <MusicAtLocationPage />}
+				options={() => tabBarOptions(icons['Music At Location'], true)}
+			/>
+			<Tab.Screen
+				name="Profile"
+				children={() => <ProfilePage />}
+				options={() => tabBarOptions(icons.Profile)}
+			/>
 		</Tab.Navigator>
 	);
 };
-
 export default Footer;
