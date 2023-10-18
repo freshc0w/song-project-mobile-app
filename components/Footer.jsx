@@ -1,6 +1,6 @@
 import { View, Image } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { colorScheme, styles, colors } from '../styles/styles';
+import { styles, colors } from '../styles/styles';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import MapPage from '../pages/MapPage';
@@ -13,7 +13,6 @@ import { tabBarOptions, allTabs, icons } from '../config/baseConfig';
 const Tab = createBottomTabNavigator();
 
 const Footer = () => {
-	const isDark = colorScheme === 'dark';
 
 	return (
 		<Tab.Navigator
