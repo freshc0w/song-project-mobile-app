@@ -37,7 +37,7 @@ const PlaySamplePage = ({ route, navigation }) => {
 				<Text style={additionalStyles.currentLocationStatusHeading}>
 					Currently At This Location
 				</Text>
-				<UserContainer />
+				<UserContainer profilePic={route.params.currProfile.profilePic} userName={route.params.currProfile.name} />
 				<UserContainer />
 			</View>
 		</SafeAreaView>

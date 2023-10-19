@@ -196,12 +196,14 @@ export const additionalStyles = StyleSheet.create({
 		flexDirection: 'row',
 		maxWidth: '90%',
 		gap: 15,
-    alignItems: 'center'
+		alignItems: 'center',
 	},
 	userContainerImg: {
 		borderRadius: 50,
-		maxWidth: 50,
-		maxHeight: 50,
+		maxWidth: 55,
+		width: 55,
+		height: 55,
+		maxHeight: 55,
 	},
 	userContainerProfileName: {
 		fontSize: 16,

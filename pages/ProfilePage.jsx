@@ -7,15 +7,21 @@ import {
 	TextInput,
 	KeyboardAvoidingView,
 } from 'react-native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { styles, colors, additionalStyles, mode } from '../styles/styles';
 import * as ImagePicker from 'expo-image-picker';
 import PhotoContainer from '../components/PhotoContainer';
 
-const ProfilePage = () => {
+const ProfilePage = ({ currProfile, handleSetProfile }) => {
 	const [photo, setPhoto] = useState({});
 	const [profileName, setProfileName] = useState('');
 
+	useEffect(() => {
+		handleSetProfile({
+			...currProfile,
+			name: profileName,
+		});
+	}, [profileName]);
 	const handleChangePhotoPress = async () => {
 		const result = await ImagePicker.launchImageLibraryAsync({
 			mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -30,6 +36,11 @@ const ProfilePage = () => {
 			result.assets[0].uri
 		) {
 			setPhoto(result.assets[0]);
+			// Update global state
+			handleSetProfile({
+				...currProfile,
+				profilePic: result.assets[0].uri,
+			});
 		}
 	};
 

@@ -13,7 +13,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 const Tab = createBottomTabNavigator();
 const PlayMusicStack = createStackNavigator();
 
-const PlayMusicStackScreen = ({ nearbyMusic }) => {
+const PlayMusicStackScreen = ({ nearbyMusic, currProfile }) => {
 	return (
 		<PlayMusicStack.Navigator
 			screenOptions={{ headerShown: false }}
@@ -22,6 +22,7 @@ const PlayMusicStackScreen = ({ nearbyMusic }) => {
 			<PlayMusicStack.Screen
 				name="Play Sample"
 				component={PlaySamplePage}
+				initialParams={{ currProfile }}
 			/>
 			<PlayMusicStack.Screen
 				name="Samples At Location"
@@ -32,7 +33,7 @@ const PlayMusicStackScreen = ({ nearbyMusic }) => {
 	);
 };
 
-const Footer = ({ nearbyMusic, setNearbyMusic }) => {
+const Footer = ({ nearbyMusic, setNearbyMusic, profile, setProfile }) => {
 	return (
 		<Tab.Navigator
 			screenOptions={{
@@ -57,14 +58,24 @@ const Footer = ({ nearbyMusic, setNearbyMusic }) => {
 			/>
 			<Tab.Screen
 				name="Music At Location"
-				children={() => <PlayMusicStackScreen nearbyMusic={nearbyMusic} />}
+				children={() => (
+					<PlayMusicStackScreen
+						nearbyMusic={nearbyMusic}
+						currProfile={profile}
+					/>
+				)}
 				options={() =>
 					tabBarOptions(getIcons()['Music At Location'], true, nearbyMusic)
 				}
 			/>
 			<Tab.Screen
 				name="Profile"
-				children={() => <ProfilePage />}
+				children={() => (
+					<ProfilePage
+						currProfile={profile}
+						handleSetProfile={setProfile}
+					/>
+				)}
 				options={() => tabBarOptions(getIcons().Profile)}
 			/>
 		</Tab.Navigator>
