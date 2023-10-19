@@ -1,7 +1,19 @@
-import { Text } from "react-native";
+import { Text, View, SafeAreaView, Image } from 'react-native';
+import { styles, isDark } from '../styles/styles';
+import { icons } from '../config/baseConfig';
 
 const MusicAtLocationPage = () => {
-  return <Text>Music At Location Page</Text>;
-}
+	return (
+		<SafeAreaView style={styles.nearbyAndPlayContainer}>
+			<View style={styles.location}>
+				<Image
+					style={styles.locationIcon}
+					source={isDark ? icons.locationIconLight : icons.locationIconDark}
+				></Image>
+				<Text style={styles.locationHeading}>UQ Lakes</Text>
+			</View>
+		</SafeAreaView>
+	);
+};
 
 export default MusicAtLocationPage;

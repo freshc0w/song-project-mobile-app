@@ -60,9 +60,11 @@ export const styles = {
 		flexDirection: 'row',
 		justifyContent: 'space-around',
 		alignItems: 'center',
+		padding: 20,
+		paddingTop: 40,
 	},
 	locationHeading: {
-		fontSize: 20,
+		fontSize: 25,
 		fontWeight: 'bold',
 		color: colors[mode].fgColor,
 		paddingBottom: 6,
@@ -76,8 +78,8 @@ export const styles = {
 		textAlign: 'center',
 	},
 	locationIcon: {
-		width: 35,
-		height: 105,
+		width: 40,
+		height: 70,
 	},
 	currentLocation: {
 		marginBottom: 10,
@@ -91,7 +93,7 @@ export const styles = {
 		flex: 1,
 	},
 	input: {
-    marginTop: 40,
+		marginTop: 40,
 		backgroundColor: colors[mode].fgColorLighter,
 		color: colors[mode].fgColor,
 		borderRadius: 5,
