@@ -3,7 +3,7 @@ import MapView, { Circle, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useEffect, useState } from 'react';
 import * as Location from 'expo-location';
 
-import { isDark, styles, darkMapStyle } from '../styles/styles';
+import { isDark, styles, darkMapStyle, additionalStyles } from '../styles/styles';
 import { locations } from '../config/locations';
 import { findNearest, isPointWithinRadius } from 'geolib';
 
@@ -115,7 +115,7 @@ const MapPage = ({ setNearbyMusic }) => {
 	]);
 
 	return (
-		<View style={styles.mapViewContainer}>
+		<View style={additionalStyles.mapViewContainer}>
 			<MapView
 				camera={{
 					center: mapState.userLocation,
@@ -124,7 +124,7 @@ const MapPage = ({ setNearbyMusic }) => {
 					zoom: 15, // android only
 				}}
 				showsUserLocation={mapState.locationPermission}
-				style={styles.mapView}
+				style={additionalStyles.mapView}
 				provider={PROVIDER_GOOGLE}
 				customMapStyle={isDark ? darkMapStyle : null}
 				// customMapStyle={darkMapStyle}

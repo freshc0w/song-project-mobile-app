@@ -1,9 +1,12 @@
-import { Appearance } from 'react-native';
+import { Appearance, StyleSheet, Dimensions } from 'react-native';
 
 // Light or Dark mode
 // * TEMPORARY
-const mode = Appearance.getColorScheme() === 'dark' ? 'dark' : 'dark';
+export const mode = Appearance.getColorScheme() === 'dark' ? 'dark' : 'dark';
 export const isDark = mode === 'dark';
+
+const width = Dimensions.get('window').width;
+const height = Dimensions.get('window').height;
 
 // Light and Dark colour schemes
 export const colors = {
@@ -100,11 +103,12 @@ export const styles = {
 		borderRadius: 10,
 		borderColor: colors[mode].fgColorLighter,
 		borderStyle: 'dashed',
-		// height: height / 1.625
+		height: height / 1.625,
 	},
 	photoFullImage: {
 		width: '100%',
 		borderRadius: 10,
+    height: height/ 1.625,
 	},
 	addPhoto: {
 		backgroundColor: colors[mode].fgColor,
@@ -126,9 +130,12 @@ export const styles = {
 		textAlign: 'center',
 		width: '50%',
 		marginLeft: '25%',
-		// marginTop: -(height / 12)
+		marginTop: -(height / 12),
+    alignItems: 'center',
 	},
-	// added
+};
+
+export const additionalStyles = StyleSheet.create({
 	middleTabIcon: {
 		width: 100,
 	},
@@ -139,7 +146,14 @@ export const styles = {
 		width: '100%',
 		height: '100%',
 	},
-};
+	profileHeadingContainer: {
+		marginTop: 15,
+	},
+  profileButtonView: {
+    position: 'absolute',
+    bottom: 0,
+  }
+});
 
 export const darkMapStyle = [
 	{
