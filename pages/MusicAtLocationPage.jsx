@@ -1,4 +1,4 @@
-import { Text, View, SafeAreaView, Image } from 'react-native';
+import { Text, View, SafeAreaView, Image, ScrollView } from 'react-native';
 import {
 	styles,
 	isDark,
@@ -20,21 +20,53 @@ const MusicAtLocationPage = () => {
 				></Image>
 				<Text style={styles.locationHeading}>UQ Lakes</Text>
 			</View>
-			<SongSampleContainer
-				title="Song 1"
-				date="01-01-2023"
-				rating={4.5}
-			/>
-			<SongSampleContainer
-				title="Song 2"
-				date="01-01-2023"
-				rating={3}
-			/>
-			<SongSampleContainer
-				title="Song 3"
-				date="01-01-2023"
-				rating={2}
-			/>
+			<ScrollView>
+				<SongSampleContainer
+					title="Song 1"
+					date="01-01-2023"
+					rating={4.5}
+				/>
+				<SongSampleContainer
+					title="Song 2"
+					date="01-01-2023"
+					rating={3}
+				/>
+				<SongSampleContainer
+					title="Song 3"
+					date="01-01-2023"
+					rating={2}
+				/>
+				<SongSampleContainer
+					title="Song 1"
+					date="01-01-2023"
+					rating={4.5}
+				/>
+				<SongSampleContainer
+					title="Song 2"
+					date="01-01-2023"
+					rating={3}
+				/>
+				<SongSampleContainer
+					title="Song 3"
+					date="01-01-2023"
+					rating={2}
+				/>
+				<SongSampleContainer
+					title="Song 1"
+					date="01-01-2023"
+					rating={4.5}
+				/>
+				<SongSampleContainer
+					title="Song 2"
+					date="01-01-2023"
+					rating={3}
+				/>
+				<SongSampleContainer
+					title="Song 3"
+					date="01-01-2023"
+					rating={2}
+				/>
+			</ScrollView>
 		</SafeAreaView>
 	);
 };
