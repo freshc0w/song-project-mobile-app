@@ -3,7 +3,11 @@ import MapView, { Circle, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useEffect, useState } from 'react';
 import * as Location from 'expo-location';
 
-import { isDark, styles, darkMapStyle, additionalStyles } from '../styles/styles';
+import {
+	isDark,
+	darkMapStyle,
+	additionalStyles,
+} from '../styles/styles';
 import { locations } from '../config/locations';
 import { findNearest, isPointWithinRadius } from 'geolib';
 
@@ -52,8 +56,6 @@ const MapPage = ({ setNearbyMusic }) => {
 			isPointWithinRadius(location.coords, userLocation, radius)
 		);
 
-		console.log('LOCATIONS WITHIN RANGE:', locationsWithinRange);
-
 		return locationsWithinRange;
 	};
 
@@ -64,13 +66,9 @@ const MapPage = ({ setNearbyMusic }) => {
 			viableLocations.map(location => location.coords)
 		);
 
-		console.log('NEAREST COORDS:', nearestCoords);
-
 		const location = mapState.locations.find(
 			location => location.coords === nearestCoords
 		);
-
-		console.log('NEAREST LOCATION:', location);
 
 		// set nearby music context
 		setNearbyMusic(location || null);
@@ -110,8 +108,6 @@ const MapPage = ({ setNearbyMusic }) => {
 		}
 	}, [
 		mapState.locationPermission,
-		// mapState.userLocation,
-		// mapState.nearestLocation,
 	]);
 
 	return (
