@@ -27,6 +27,7 @@ const MapPage = () => {
 		locationPermission: false,
 		locations: formattedLocations,
 		userLocation: {
+      // TODO: change this
 			latitude: -27.5263381,
 			longitude: 153.0954163,
 			// Starts at "Indooroopilly Shopping Centre"

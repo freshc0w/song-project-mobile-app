@@ -1,6 +1,8 @@
 import { Appearance } from 'react-native';
 
-const mode = Appearance.getColorScheme() === 'dark' ? 'dark' : 'light';
+// Light or Dark mode
+// * TEMPORARY
+const mode = Appearance.getColorScheme() === 'dark' ? 'dark' : 'dark';
 export const isDark = mode === 'dark';
 
 // Light and Dark colour schemes

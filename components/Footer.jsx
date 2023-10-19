@@ -27,6 +27,7 @@ const Footer = () => {
 				),
 				tabBarActiveBackgroundColor: colors.blackColorTranslucentLess,
 				tabBarShowLabel: false,
+        headerShown: false,
 			}}
 		>
 			<Tab.Screen
