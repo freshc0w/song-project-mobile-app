@@ -13,7 +13,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 const Tab = createBottomTabNavigator();
 const PlayMusicStack = createStackNavigator();
 
-const PlayMusicStackScreen = () => {
+const PlayMusicStackScreen = ({ nearbyMusic }) => {
 	return (
 		<PlayMusicStack.Navigator
 			screenOptions={{ headerShown: false }}
@@ -26,6 +26,7 @@ const PlayMusicStackScreen = () => {
 			<PlayMusicStack.Screen
 				name="Samples At Location"
 				component={MusicAtLocationPage}
+				initialParams={{ nearbyMusic }}
 			/>
 		</PlayMusicStack.Navigator>
 	);
@@ -56,7 +57,7 @@ const Footer = ({ nearbyMusic, setNearbyMusic }) => {
 			/>
 			<Tab.Screen
 				name="Music At Location"
-				children={() => <PlayMusicStackScreen />}
+				children={() => <PlayMusicStackScreen nearbyMusic={nearbyMusic} />}
 				options={() =>
 					tabBarOptions(getIcons()['Music At Location'], true, nearbyMusic)
 				}

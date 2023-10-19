@@ -16,7 +16,8 @@ import {
 import { getIcons } from '../config/baseConfig';
 import SongSampleContainer from '../components/SongSampleContainer';
 
-const MusicAtLocationPage = ({ navigation }) => {
+const MusicAtLocationPage = ({ route, navigation }) => {
+	console.log('MUSIC LOCATION ROUTE', route.params.nearbyMusic);
 	return (
 		<SafeAreaView style={styles.nearbyAndPlayContainer}>
 			<View style={styles.location}>
@@ -26,7 +27,10 @@ const MusicAtLocationPage = ({ navigation }) => {
 						isDark ? getIcons().locationIconLight : getIcons().locationIconDark
 					}
 				></Image>
-				<Text style={styles.locationHeading}>UQ Lakes</Text>
+				{/* <Text style={styles.locationHeading}>UQ Lakes</Text> */}
+				<Text style={styles.locationHeading}>
+					{route.params.nearbyMusic.location}
+				</Text>
 			</View>
 			<ScrollView>
 				<TouchableOpacity
