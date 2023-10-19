@@ -7,13 +7,10 @@ import MusicAtLocationPage from '../pages/MusicAtLocationPage';
 import ProfilePage from '../pages/ProfilePage';
 
 import { tabBarOptions, icons } from '../config/baseConfig';
-import { useContext } from 'react';
-import { NearbyMusicContext } from '../App';
 
 const Tab = createBottomTabNavigator();
 
-const Footer = () => {
-	const { nearbyMusic, setNearbyMusic } = useContext(NearbyMusicContext);
+const Footer = ({ nearbyMusic, setNearbyMusic }) => {
 	return (
 		<Tab.Navigator
 			screenOptions={{
@@ -27,12 +24,12 @@ const Footer = () => {
 				),
 				tabBarActiveBackgroundColor: colors.blackColorTranslucentLess,
 				tabBarShowLabel: false,
-        headerShown: false,
+				headerShown: false,
 			}}
 		>
 			<Tab.Screen
 				name="Map"
-				children={() => <MapPage />}
+				children={() => <MapPage setNearbyMusic={setNearbyMusic}/>}
 				options={() => tabBarOptions(icons.Map)}
 			/>
 			<Tab.Screen

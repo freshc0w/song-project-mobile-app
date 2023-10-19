@@ -1,17 +1,15 @@
 import { View } from 'react-native';
 import MapView, { Circle, PROVIDER_GOOGLE } from 'react-native-maps';
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import * as Location from 'expo-location';
 
 import { isDark, styles, darkMapStyle } from '../styles/styles';
 import { locations } from '../config/locations';
 import { findNearest, isPointWithinRadius } from 'geolib';
-import { NearbyMusicContext } from '../App';
 
-const MapPage = () => {
+const MapPage = ({ setNearbyMusic }) => {
 	const CHECK_LOCATION_RADIUS = 100;
 
-	const { nearbyMusic, setNearbyMusic } = useContext(NearbyMusicContext);
 	const formattedLocations = locations.map(location => {
 		const latLongArr = location.latlong.split(', ');
 
@@ -27,7 +25,7 @@ const MapPage = () => {
 		locationPermission: false,
 		locations: formattedLocations,
 		userLocation: {
-      // TODO: change this
+			// TODO: change this
 			latitude: -27.5263381,
 			longitude: 153.0954163,
 			// Starts at "Indooroopilly Shopping Centre"
