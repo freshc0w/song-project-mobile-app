@@ -10,18 +10,7 @@ import {
 import { useState } from 'react';
 import { styles, colors, additionalStyles, mode } from '../styles/styles';
 import * as ImagePicker from 'expo-image-picker';
-
-const PhotoContainer = ({ photo }) => {
-	return !photo.uri ? (
-		<View style={styles.photoEmptyView}></View>
-	) : (
-		<Image
-			style={styles.photoFullImage}
-			source={{ uri: photo.uri }}
-			resizeMode="cover"
-		/>
-	);
-};
+import PhotoContainer from '../components/PhotoContainer';
 
 const ProfilePage = () => {
 	const [photo, setPhoto] = useState({});
