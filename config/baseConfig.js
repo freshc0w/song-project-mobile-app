@@ -1,6 +1,6 @@
 import { Image, View, Text } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { colors, styles } from '../styles/styles';
+import { colors, styles, isDark } from '../styles/styles';
 import MapPage from '../pages/MapPage';
 import ProfilePage from '../pages/ProfilePage';
 import MusicAtLocationPage from '../pages/MusicAtLocationPage';
@@ -12,6 +12,9 @@ export const getIcons = () => {
 		'Music At Location': require('../assets/logo-white.png'),
 		locationIconLight: require('../assets/icon-pin-lightpurple.png'),
 		locationIconDark: require('../assets/icon-pin-darkpurple.png'),
+		iconSmiley: isDark
+			? require('../assets/icon-smiley-lightpurple.png')
+			: require('../assets/icon-smiley-darkpurple.png'),
 	};
 };
 

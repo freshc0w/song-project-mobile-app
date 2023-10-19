@@ -15,27 +15,21 @@ import {
 } from '../styles/styles';
 import { getIcons } from '../config/baseConfig';
 import SongSampleContainer from '../components/SongSampleContainer';
+import NearbyAndPlayHeader from '../components/NearbyAndPlayHeader';
 
 const MusicAtLocationPage = ({ route, navigation }) => {
-	console.log('MUSIC LOCATION ROUTE', route.params.nearbyMusic);
+	// Passed the NEARBY MUSIC PARAMS
+	console.log('MUSIC LOCATION ROUTE', route.params.nearbyMusic.location);
 	return (
 		<SafeAreaView style={styles.nearbyAndPlayContainer}>
-			<View style={styles.location}>
-				<Image
-					style={styles.locationIcon}
-					source={
-						isDark ? getIcons().locationIconLight : getIcons().locationIconDark
-					}
-				></Image>
-				{/* <Text style={styles.locationHeading}>UQ Lakes</Text> */}
-				<Text style={styles.locationHeading}>
-					{route.params.nearbyMusic.location}
-				</Text>
-			</View>
+			<NearbyAndPlayHeader locationName={route.params.nearbyMusic.location} />
 			<ScrollView>
 				<TouchableOpacity
 					onPress={() =>
-						navigation.navigate('Play Sample', { locationId: '123' })
+						navigation.navigate('Play Sample', {
+							locationId: '123',
+							nearbyMusic: route.params.nearbyMusic,
+						})
 					}
 				>
 					<SongSampleContainer
@@ -46,7 +40,10 @@ const MusicAtLocationPage = ({ route, navigation }) => {
 				</TouchableOpacity>
 				<TouchableOpacity
 					onPress={() =>
-						navigation.navigate('Play Sample', { locationId: '222' })
+						navigation.navigate('Play Sample', {
+							locationId: '222',
+							nearbyMusic: route.params.nearbyMusic,
+						})
 					}
 				>
 					<SongSampleContainer

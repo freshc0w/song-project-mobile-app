@@ -55,6 +55,7 @@ export const styles = {
 		fontWeight: 'bold',
 		color: colors[mode].fgColor,
 		paddingBottom: 0,
+		marginBottom: 15,
 	},
 	location: {
 		flexDirection: 'row',
@@ -64,10 +65,12 @@ export const styles = {
 		paddingTop: 40,
 	},
 	locationHeading: {
-		fontSize: 25,
+		fontSize: 20,
 		fontWeight: 'bold',
 		color: colors[mode].fgColor,
 		paddingBottom: 6,
+		maxWidth: '80%',
+		textAlign: 'center',
 	},
 	playButton: {
 		backgroundColor: colors[mode].fgColor,
@@ -76,6 +79,7 @@ export const styles = {
 		padding: 10,
 		borderRadius: 10,
 		textAlign: 'center',
+		alignItems: 'center',
 	},
 	locationIcon: {
 		width: 40,
@@ -86,6 +90,9 @@ export const styles = {
 	},
 	ratingComponent: {
 		paddingTop: 50,
+	},
+	ratingComponentAdjustable: {
+		paddingTop: 20,
 	},
 	profileContainer: {
 		padding: 20,
@@ -165,12 +172,39 @@ export const additionalStyles = StyleSheet.create({
 		// justifyContent: 'center',
 		alignItems: 'center',
 		padding: 5,
-    paddingTop: 0,
+		paddingTop: 0,
 	},
 	songSampleInfo: {
 		paddingRight: 35,
 	},
 	songSampleTextInfo: {
+		color: colors[mode].fgColor,
+	},
+	currentLocationStatusContainer: {
+		position: 'absolute',
+		bottom: 5,
+		gap: 15,
+		padding: 10,
+	},
+	currentLocationStatusHeading: {
+		fontSize: 16,
+		fontWeight: 'bold',
+		color: colors[mode].fgColor,
+		// paddingBottom: 6,
+	},
+	currentLocationStatusUserContainer: {
+		flexDirection: 'row',
+		maxWidth: '90%',
+		gap: 15,
+    alignItems: 'center'
+	},
+	userContainerImg: {
+		borderRadius: 50,
+		maxWidth: 50,
+		maxHeight: 50,
+	},
+	userContainerProfileName: {
+		fontSize: 16,
 		color: colors[mode].fgColor,
 	},
 });
