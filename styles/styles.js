@@ -91,7 +91,7 @@ export const styles = {
 		flex: 1,
 	},
 	input: {
-		marginTop: 20,
+    marginTop: 40,
 		backgroundColor: colors[mode].fgColorLighter,
 		color: colors[mode].fgColor,
 		borderRadius: 5,
@@ -108,7 +108,7 @@ export const styles = {
 	photoFullImage: {
 		width: '100%',
 		borderRadius: 10,
-    height: height/ 1.625,
+		height: height / 1.625,
 	},
 	addPhoto: {
 		backgroundColor: colors[mode].fgColor,
@@ -119,7 +119,9 @@ export const styles = {
 		textAlign: 'center',
 		width: '50%',
 		marginLeft: '25%',
-		// marginTop: -(height / 3.25)
+		marginTop: -(height / 3.25),
+		marginBottom: height / 4.25,
+		alignItems: 'center',
 	},
 	changePhoto: {
 		backgroundColor: colors[mode].fgColor,
@@ -131,7 +133,7 @@ export const styles = {
 		width: '50%',
 		marginLeft: '25%',
 		marginTop: -(height / 12),
-    alignItems: 'center',
+		alignItems: 'center',
 	},
 };
 
@@ -149,10 +151,10 @@ export const additionalStyles = StyleSheet.create({
 	profileHeadingContainer: {
 		marginTop: 15,
 	},
-  profileButtonView: {
-    position: 'absolute',
-    bottom: 0,
-  }
+	profileButtonView: {
+		position: 'absolute',
+		bottom: 0,
+	},
 });
 
 export const darkMapStyle = [

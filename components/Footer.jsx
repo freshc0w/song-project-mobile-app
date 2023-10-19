@@ -25,6 +25,7 @@ const Footer = ({ nearbyMusic, setNearbyMusic }) => {
 				tabBarActiveBackgroundColor: colors.blackColorTranslucentLess,
 				tabBarShowLabel: false,
 				headerShown: false,
+        tabBarHideOnKeyboard: true,
 			}}
 		>
 			<Tab.Screen

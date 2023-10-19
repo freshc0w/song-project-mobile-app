@@ -3,8 +3,9 @@ import {
 	Image,
 	View,
 	SafeAreaView,
-	Button,
 	TouchableOpacity,
+	TextInput,
+	KeyboardAvoidingView,
 } from 'react-native';
 import { useState } from 'react';
 import { styles, colors, additionalStyles, mode } from '../styles/styles';
@@ -24,6 +25,7 @@ const PhotoContainer = ({ photo }) => {
 
 const ProfilePage = () => {
 	const [photo, setPhoto] = useState({});
+	const [profileName, setProfileName] = useState('');
 
 	const handleChangePhotoPress = async () => {
 		const result = await ImagePicker.launchImageLibraryAsync({
@@ -43,21 +45,34 @@ const ProfilePage = () => {
 	};
 
 	return (
-		<SafeAreaView style={styles.profileContainer}>
+		<KeyboardAvoidingView
+			behavior="position"
+			style={styles.profileContainer}
+		>
 			<View style={additionalStyles.profileHeadingContainer}>
 				<Text style={styles.heading}>Edit Profile</Text>
 				<Text style={styles.subHeading}>Mirror, Mirror On The Wall...</Text>
 			</View>
 			<PhotoContainer photo={photo} />
-			<TouchableOpacity style={styles.changePhoto}>
+			<TouchableOpacity
+				style={!photo.uri ? styles.addPhoto : styles.changePhoto}
+			>
 				<Text
 					style={{ color: colors[mode].bgColor }}
 					onPress={handleChangePhotoPress}
 				>
-					Change Photo
+					{!photo.uri ? 'Add Photo' : 'Change Photo'}
 				</Text>
 			</TouchableOpacity>
-		</SafeAreaView>
+			<View>
+				<TextInput
+					style={styles.input}
+					placeholder="Enter your name"
+					value={profileName}
+					onChangeText={setProfileName}
+				></TextInput>
+			</View>
+		</KeyboardAvoidingView>
 	);
 };
 
