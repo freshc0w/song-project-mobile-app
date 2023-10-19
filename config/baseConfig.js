@@ -5,13 +5,14 @@ import MapPage from '../pages/MapPage';
 import ProfilePage from '../pages/ProfilePage';
 import MusicAtLocationPage from '../pages/MusicAtLocationPage';
 
-
-export const icons = {
-	Profile: require('../assets/tab-profile-white.png'),
-	Map: require('../assets/tab-map-white.png'),
-	'Music At Location': require('../assets/logo-white.png'),
-  locationIconLight: require('../assets/icon-pin-lightpurple.png'),
-  locationIconDark: require('../assets/icon-pin-darkpurple.png'),
+export const getIcons = () => {
+	return {
+		Profile: require('../assets/tab-profile-white.png'),
+		Map: require('../assets/tab-map-white.png'),
+		'Music At Location': require('../assets/logo-white.png'),
+		locationIconLight: require('../assets/icon-pin-lightpurple.png'),
+		locationIconDark: require('../assets/icon-pin-darkpurple.png'),
+	};
 };
 
 export const allTabs = {

@@ -5,10 +5,31 @@ import { LinearGradient } from 'expo-linear-gradient';
 import MapPage from '../pages/MapPage';
 import MusicAtLocationPage from '../pages/MusicAtLocationPage';
 import ProfilePage from '../pages/ProfilePage';
+import PlaySamplePage from '../pages/PlaySamplePage';
 
-import { tabBarOptions, icons } from '../config/baseConfig';
+import { tabBarOptions, getIcons } from '../config/baseConfig';
+import { createStackNavigator } from '@react-navigation/stack';
 
 const Tab = createBottomTabNavigator();
+const PlayMusicStack = createStackNavigator();
+
+const PlayMusicStackScreen = () => {
+	return (
+		<PlayMusicStack.Navigator
+			screenOptions={{ headerShown: false }}
+			initialRouteName="Samples At Location"
+		>
+			<PlayMusicStack.Screen
+				name="Play Sample"
+				component={PlaySamplePage}
+			/>
+			<PlayMusicStack.Screen
+				name="Samples At Location"
+				component={MusicAtLocationPage}
+			/>
+		</PlayMusicStack.Navigator>
+	);
+};
 
 const Footer = ({ nearbyMusic, setNearbyMusic }) => {
 	return (
@@ -25,25 +46,25 @@ const Footer = ({ nearbyMusic, setNearbyMusic }) => {
 				tabBarActiveBackgroundColor: colors.blackColorTranslucentLess,
 				tabBarShowLabel: false,
 				headerShown: false,
-        tabBarHideOnKeyboard: true,
+				tabBarHideOnKeyboard: true,
 			}}
 		>
 			<Tab.Screen
 				name="Map"
-				children={() => <MapPage setNearbyMusic={setNearbyMusic}/>}
-				options={() => tabBarOptions(icons.Map)}
+				children={() => <MapPage setNearbyMusic={setNearbyMusic} />}
+				options={() => tabBarOptions(getIcons().Map)}
 			/>
 			<Tab.Screen
 				name="Music At Location"
-				children={() => <MusicAtLocationPage />}
+				children={() => <PlayMusicStackScreen />}
 				options={() =>
-					tabBarOptions(icons['Music At Location'], true, nearbyMusic)
+					tabBarOptions(getIcons()['Music At Location'], true, nearbyMusic)
 				}
 			/>
 			<Tab.Screen
 				name="Profile"
 				children={() => <ProfilePage />}
-				options={() => tabBarOptions(icons.Profile)}
+				options={() => tabBarOptions(getIcons().Profile)}
 			/>
 		</Tab.Navigator>
 	);
