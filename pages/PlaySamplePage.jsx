@@ -12,12 +12,11 @@ import UserContainer from '../components/UserContainer';
 
 // ? Use Webview
 const PlaySamplePage = ({ route, navigation }) => {
-	// console.log('navigation params', navigation.params);
 	// * Probably pass the song itself instead of the song id?
-	console.log('route params', route.params);
+	const { nearbyMusic, currProfile } = route.params;
 	return (
 		<SafeAreaView style={styles.nearbyAndPlayContainer}>
-			<NearbyAndPlayHeader locationName={route.params.nearbyMusic.name} />
+			<NearbyAndPlayHeader locationName={nearbyMusic.name} />
 			<Text style={styles.songName}>Song 1</Text>
 			<TouchableOpacity style={styles.playButton}>
 				<Text style={{ color: colors[mode].bgColor, fontWeight: 'bold' }}>
@@ -38,8 +37,8 @@ const PlaySamplePage = ({ route, navigation }) => {
 					Currently At This Location
 				</Text>
 				<UserContainer
-					profilePic={route.params.currProfile.profilePic}
-					userName={route.params.currProfile.name}
+					profilePic={currProfile.profilePic}
+					userName={currProfile.name}
 				/>
 				<UserContainer />
 			</View>
