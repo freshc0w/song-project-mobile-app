@@ -4,26 +4,16 @@ import { useEffect, useState } from 'react';
 import * as Location from 'expo-location';
 
 import { isDark, darkMapStyle, additionalStyles } from '../styles/styles';
-import { locations } from '../config/locations';
 import { findNearest, isPointWithinRadius } from 'geolib';
+
+import locationsServices from '../services/locations';
 
 const MapPage = ({ setNearbyMusic }) => {
 	const CHECK_LOCATION_RADIUS = 100;
 
-	const formattedLocations = locations.map(location => {
-		const latLongArr = location.latlong.split(', ');
-
-		location.coords = {
-			latitude: parseFloat(latLongArr[0]),
-			longitude: parseFloat(latLongArr[1]),
-		};
-
-		return location;
-	});
-
 	const initialMapState = {
 		locationPermission: false,
-		locations: formattedLocations,
+		locations: [],
 		userLocation: {
 			// TODO: change this
 			latitude: -27.5263381,
@@ -40,10 +30,35 @@ const MapPage = ({ setNearbyMusic }) => {
 		const reqPermission = async () => {
 			const { status } = await Location.requestForegroundPermissionsAsync();
 			status === 'granted' &&
-				setMapState({ ...mapState, locationPermission: true });
+				setMapState(mapState => {
+					return { ...mapState, locationPermission: true };
+				});
 		};
 
 		reqPermission();
+	}, []);
+
+	useEffect(() => {
+		const fetchLocations = async () => {
+			const locations = await locationsServices.getLocations();
+			const formattedLocations = locations
+				.filter(location => location.sharing)
+				.map(location => {
+					location.coords = {
+						latitude: parseFloat(location.latitude),
+						longitude: parseFloat(location.longitude),
+					};
+
+					return location;
+				});
+			setMapState(mapState => {
+				return {
+					...mapState,
+					locations: formattedLocations,
+				};
+			});
+		};
+		fetchLocations();
 	}, []);
 
 	// find available locations
@@ -88,10 +103,12 @@ const MapPage = ({ setNearbyMusic }) => {
 						findViableLocations(userLocation, CHECK_LOCATION_RADIUS)
 					);
 					// update map state
-					setMapState({
-						...mapState,
-						userLocation,
-						nearestLocation,
+					setMapState(mapState => {
+						return {
+							...mapState,
+							userLocation,
+							nearestLocation,
+						};
 					});
 				}
 			);
