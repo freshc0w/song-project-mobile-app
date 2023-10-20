@@ -33,7 +33,13 @@ const PlayMusicStackScreen = ({ nearbyMusic, currProfile }) => {
 	);
 };
 
-const Footer = ({ nearbyMusic, setNearbyMusic, profile, setProfile }) => {
+const Footer = ({
+	nearbyMusic,
+	setNearbyMusic,
+	profile,
+	setProfile,
+	locations,
+}) => {
 	return (
 		<Tab.Navigator
 			screenOptions={{
@@ -53,7 +59,12 @@ const Footer = ({ nearbyMusic, setNearbyMusic, profile, setProfile }) => {
 		>
 			<Tab.Screen
 				name="Map"
-				children={() => <MapPage setNearbyMusic={setNearbyMusic} />}
+				children={() => (
+					<MapPage
+						setNearbyMusic={setNearbyMusic}
+						allLocations={locations}
+					/>
+				)}
 				options={() => tabBarOptions(getIcons().Map)}
 			/>
 			<Tab.Screen

@@ -3,41 +3,44 @@ import MapView, { Circle, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useEffect, useState } from 'react';
 import * as Location from 'expo-location';
 
-import {
-	isDark,
-	darkMapStyle,
-	additionalStyles,
-} from '../styles/styles';
-import { locations } from '../config/locations';
+import { isDark, darkMapStyle, additionalStyles } from '../styles/styles';
+// import { locations } from '../config/locations';
 import { findNearest, isPointWithinRadius } from 'geolib';
 
-const MapPage = ({ setNearbyMusic }) => {
+const MapPage = ({ setNearbyMusic, allLocations }) => {
 	const CHECK_LOCATION_RADIUS = 100;
-
-	const formattedLocations = locations.map(location => {
-		const latLongArr = location.latlong.split(', ');
-
-		location.coords = {
-			latitude: parseFloat(latLongArr[0]),
-			longitude: parseFloat(latLongArr[1]),
-		};
-
-		return location;
-	});
-
-	const initialMapState = {
+	const [locations, setLocations] = useState(allLocations);
+	const [nearestLocation, setNearestLocation] = useState(null);
+	const [mapState, setMapState] = useState({
 		locationPermission: false,
-		locations: formattedLocations,
+		locations: [],
 		userLocation: {
 			// TODO: change this
 			latitude: -27.5263381,
 			longitude: 153.0954163,
 			// Starts at "Indooroopilly Shopping Centre"
 		},
-		nearestLocation: null,
-	};
+		nearestLocation,
+	});
 
-	const [mapState, setMapState] = useState(initialMapState);
+	// When location data is updated due to fetch time.
+	useEffect(() => {
+		const formattedLocations = allLocations
+			.filter(location => location.sharing)
+			.map(location => {
+				location.latitude = parseFloat(location.latitude);
+				location.longitude = parseFloat(location.longitude);
+				return location;
+			});
+		setLocations(formattedLocations);
+	}, [allLocations]);
+
+	useEffect(() => {
+		setMapState({
+			...mapState,
+			locations,
+		});
+	}, [locations, setLocations]);
 
 	// Request user permission
 	useEffect(() => {
@@ -52,9 +55,13 @@ const MapPage = ({ setNearbyMusic }) => {
 
 	// find available locations
 	const findViableLocations = (userLocation, radius) => {
-		const locationsWithinRange = mapState.locations.filter(location =>
-			isPointWithinRadius(location.coords, userLocation, radius)
-		);
+		const locationsWithinRange = mapState.locations.filter(location => {
+			const locationCoords = {
+				latitude: location.latitude,
+				longitude: location.longitude,
+			};
+			return isPointWithinRadius(locationCoords, userLocation, radius);
+		});
 
 		return locationsWithinRange;
 	};
@@ -63,13 +70,20 @@ const MapPage = ({ setNearbyMusic }) => {
 		// if (!viableLocations.length) return null;
 		const nearestCoords = findNearest(
 			userLocation,
-			viableLocations.map(location => location.coords)
+			viableLocations.map(location => {
+				const locationCoords = {
+					latitude: location.latitude,
+					longitude: location.longitude,
+				};
+				return locationCoords;
+			})
 		);
 
 		const location = mapState.locations.find(
-			location => location.coords === nearestCoords
+			location =>
+				location.latitude === nearestCoords.latitude &&
+				location.longitude === nearestCoords.longitude
 		);
-
 		// set nearby music context
 		setNearbyMusic(location || null);
 		return location;
@@ -87,15 +101,17 @@ const MapPage = ({ setNearbyMusic }) => {
 						latitude: location.coords.latitude,
 						longitude: location.coords.longitude,
 					};
-					const nearestLocation = findNearestLocation(
-						userLocation,
-						findViableLocations(userLocation, CHECK_LOCATION_RADIUS)
-					);
+					if (mapState.locations.length) {
+						const nearest = findNearestLocation(
+							userLocation,
+							findViableLocations(userLocation, CHECK_LOCATION_RADIUS)
+						);
+						setNearestLocation(nearest);
+					}
 					// update map state
 					setMapState({
 						...mapState,
 						userLocation,
-						nearestLocation,
 					});
 				}
 			);
@@ -106,9 +122,7 @@ const MapPage = ({ setNearbyMusic }) => {
 			//   }
 			// };
 		}
-	}, [
-		mapState.locationPermission,
-	]);
+	}, [mapState.locationPermission, mapState.locations]);
 
 	return (
 		<View style={additionalStyles.mapViewContainer}>
@@ -125,16 +139,24 @@ const MapPage = ({ setNearbyMusic }) => {
 				customMapStyle={isDark ? darkMapStyle : null}
 				// customMapStyle={darkMapStyle}
 			>
-				{mapState.locations.map(location => (
-					<Circle
-						key={location.id}
-						center={location.coords}
-						radius={CHECK_LOCATION_RADIUS}
-						strokeWidth={3}
-						strokeColor="#A42DE8"
-						fillColor={isDark ? 'rgba(128,0,128,0.5)' : 'rgba(210,169,210,0.5)'}
-					/>
-				))}
+				{mapState.locations.map(location => {
+					const locationCoords = {
+						latitude: location.latitude,
+						longitude: location.longitude,
+					};
+					return (
+						<Circle
+							key={location.id}
+							center={locationCoords}
+							radius={CHECK_LOCATION_RADIUS}
+							strokeWidth={3}
+							strokeColor="#A42DE8"
+							fillColor={
+								isDark ? 'rgba(128,0,128,0.5)' : 'rgba(210,169,210,0.5)'
+							}
+						/>
+					);
+				})}
 			</MapView>
 		</View>
 	);

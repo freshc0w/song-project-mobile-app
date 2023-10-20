@@ -17,7 +17,7 @@ const PlaySamplePage = ({ route, navigation }) => {
 	console.log('route params', route.params);
 	return (
 		<SafeAreaView style={styles.nearbyAndPlayContainer}>
-			<NearbyAndPlayHeader locationName={route.params.nearbyMusic.location} />
+			<NearbyAndPlayHeader locationName={route.params.nearbyMusic.name} />
 			<Text style={styles.songName}>Song 1</Text>
 			<TouchableOpacity style={styles.playButton}>
 				<Text style={{ color: colors[mode].bgColor, fontWeight: 'bold' }}>
@@ -37,7 +37,10 @@ const PlaySamplePage = ({ route, navigation }) => {
 				<Text style={additionalStyles.currentLocationStatusHeading}>
 					Currently At This Location
 				</Text>
-				<UserContainer profilePic={route.params.currProfile.profilePic} userName={route.params.currProfile.name} />
+				<UserContainer
+					profilePic={route.params.currProfile.profilePic}
+					userName={route.params.currProfile.name}
+				/>
 				<UserContainer />
 			</View>
 		</SafeAreaView>

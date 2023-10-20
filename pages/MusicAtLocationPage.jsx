@@ -10,14 +10,16 @@ const MusicAtLocationPage = ({ route, navigation }) => {
 			nearbyMusic,
 		});
 	};
-
+	console.log('route params', route.params.nearbyMusic.name);
 	// Passed the NEARBY MUSIC PARAMS
 	return (
 		<SafeAreaView style={styles.nearbyAndPlayContainer}>
-			<NearbyAndPlayHeader locationName={route.params.nearbyMusic.location} />
+			<NearbyAndPlayHeader locationName={route.params.nearbyMusic.name} />
 			<ScrollView>
 				<TouchableOpacity
-					onPress={() => handleSamplePress('111', route.params.nearbyMusic)}
+					onPress={() =>
+						handleSamplePress('111', route.params.nearbyMusic)
+					}
 				>
 					<SongSampleContainer
 						title="Song 1"
