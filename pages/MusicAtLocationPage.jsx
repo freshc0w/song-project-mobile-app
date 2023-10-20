@@ -12,7 +12,6 @@ const MusicAtLocationPage = ({ route, navigation }) => {
 			nearbyMusic,
 		});
 	};
-	console.log('route params', nearbyMusic.name);
 	// Passed the NEARBY MUSIC PARAMS
 	return (
 		<SafeAreaView style={styles.nearbyAndPlayContainer}>

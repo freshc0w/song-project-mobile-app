@@ -6,42 +6,21 @@ import * as Location from 'expo-location';
 import { isDark, darkMapStyle, additionalStyles } from '../styles/styles';
 // import { locations } from '../config/locations';
 import { findNearest, isPointWithinRadius } from 'geolib';
+import locationServices from '../services/locations';
 
-const MapPage = ({ setNearbyMusic, allLocations }) => {
-	const CHECK_LOCATION_RADIUS = 100;
-	const [locations, setLocations] = useState(allLocations);
-	const [nearestLocation, setNearestLocation] = useState(null);
-	const [mapState, setMapState] = useState({
-		locationPermission: false,
-		locations: [],
-		userLocation: {
-			// TODO: change this
-			latitude: -27.5263381,
-			longitude: 153.0954163,
-			// Starts at "Indooroopilly Shopping Centre"
-		},
-		nearestLocation,
-	});
-
-	// When location data is updated due to fetch time.
-	useEffect(() => {
-		const formattedLocations = allLocations
-			.filter(location => location.sharing)
-			.map(location => {
-				location.latitude = parseFloat(location.latitude);
-				location.longitude = parseFloat(location.longitude);
-				return location;
-			});
-		setLocations(formattedLocations);
-	}, [allLocations]);
-
-	useEffect(() => {
-		setMapState({
-			...mapState,
-			locations,
+const formatLocations = allLocations => {
+	const formattedLocations = allLocations
+		.filter(location => location.sharing)
+		.map(location => {
+			location.latitude = parseFloat(location.latitude);
+			location.longitude = parseFloat(location.longitude);
+			return location;
 		});
-	}, [locations, setLocations]);
 
+	return formattedLocations;
+};
+
+const MapPage = ({ setNearbyMusic }) => {
 	// Request user permission
 	useEffect(() => {
 		const reqPermission = async () => {
@@ -53,8 +32,33 @@ const MapPage = ({ setNearbyMusic, allLocations }) => {
 		reqPermission();
 	}, []);
 
+	const CHECK_LOCATION_RADIUS = 100;
+	const [mapState, setMapState] = useState({
+		locationPermission: false,
+		locations: [],
+		userLocation: {
+			// TODO: change this
+			latitude: -27.5263381,
+			longitude: 153.0954163,
+			// Starts at "Indooroopilly Shopping Centre"
+		},
+		nearestLocation: null,
+	});
+
+	useEffect(() => {
+		const fetchLocations = async () => {
+			const locations = await locationServices.getLocations();
+			setMapState({
+				...mapState,
+				locations: formatLocations(locations),
+			});
+		};
+		fetchLocations();
+	}, [mapState.locationPermission]);
+
 	// find available locations
 	const findViableLocations = (userLocation, radius) => {
+    console.log('user location')
 		const locationsWithinRange = mapState.locations.filter(location => {
 			const locationCoords = {
 				latitude: location.latitude,
@@ -78,16 +82,29 @@ const MapPage = ({ setNearbyMusic, allLocations }) => {
 				return locationCoords;
 			})
 		);
-
+    console.log('nearest coords', nearestCoords)
 		const location = mapState.locations.find(
 			location =>
 				location.latitude === nearestCoords.latitude &&
 				location.longitude === nearestCoords.longitude
 		);
-		// set nearby music context
+
+		// * set nearby music context
 		setNearbyMusic(location || null);
 		return location;
 	};
+
+	// Update nearest locations
+	// useEffect(() => {
+	//   console.log("setting nearest")
+	// 	if (mapState.locations.length && mapState.userLocation) {
+	// 		const nearest = findNearestLocation(
+	// 			mapState.userLocation,
+	// 			findViableLocations(mapState.userLocation, CHECK_LOCATION_RADIUS)
+	// 		);
+	// 		setNearestLocation(nearest);
+	// 	}
+	// }, [mapState.userLocation]);
 
 	useEffect(() => {
 		if (mapState.locationPermission) {
@@ -101,12 +118,13 @@ const MapPage = ({ setNearbyMusic, allLocations }) => {
 						latitude: location.coords.latitude,
 						longitude: location.coords.longitude,
 					};
+
 					if (mapState.locations.length) {
-						const nearest = findNearestLocation(
+            console.log("checking nearest", mapState.locations.length)
+						findNearestLocation(
 							userLocation,
-							findViableLocations(userLocation, CHECK_LOCATION_RADIUS)
+							findViableLocations(mapState.userLocation, CHECK_LOCATION_RADIUS)
 						);
-						setNearestLocation(nearest);
 					}
 					// update map state
 					setMapState({
