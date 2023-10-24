@@ -16,7 +16,7 @@ const PlaySamplePage = ({ route, navigation }) => {
 	const { nearbyMusic, currProfile } = route.params;
 	return (
 		<SafeAreaView style={styles.nearbyAndPlayContainer}>
-			<NearbyAndPlayHeader locationName={nearbyMusic.name} />
+			<NearbyAndPlayHeader locationName={!nearbyMusic ? null : nearbyMusic.name} />
 			<Text style={styles.songName}>Song 1</Text>
 			<TouchableOpacity style={styles.playButton}>
 				<Text style={{ color: colors[mode].bgColor, fontWeight: 'bold' }}>

@@ -26,8 +26,12 @@ const PlayMusicStackScreen = ({ nearbyMusic, currProfile }) => {
 			/>
 			<PlayMusicStack.Screen
 				name="Samples At Location"
-				component={MusicAtLocationPage}
-				initialParams={{ nearbyMusic }}
+				children={({ navigation }) => (
+					<MusicAtLocationPage
+						nearbyMusic={nearbyMusic}
+						navigation={navigation}
+					/>
+				)}
 			/>
 		</PlayMusicStack.Navigator>
 	);

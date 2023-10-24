@@ -3,9 +3,8 @@ import { styles } from '../styles/styles';
 import SongSampleContainer from '../components/SongSampleContainer';
 import NearbyAndPlayHeader from '../components/NearbyAndPlayHeader';
 
-const MusicAtLocationPage = ({ route, navigation }) => {
-	const { nearbyMusic } = route.params;
-
+const MusicAtLocationPage = ({ nearbyMusic, route, navigation }) => {
+	console.log('checking all nearby music at location:', nearbyMusic);
 	const handleSamplePress = (id, nearbyMusic) => {
 		navigation.navigate('Play Sample', {
 			locationId: id,
@@ -15,7 +14,9 @@ const MusicAtLocationPage = ({ route, navigation }) => {
 	// Passed the NEARBY MUSIC PARAMS
 	return (
 		<SafeAreaView style={styles.nearbyAndPlayContainer}>
-			<NearbyAndPlayHeader locationName={nearbyMusic.name} />
+			<NearbyAndPlayHeader
+				locationName={!nearbyMusic ? null : nearbyMusic.name}
+			/>
 			<ScrollView>
 				<TouchableOpacity onPress={() => handleSamplePress('111', nearbyMusic)}>
 					<SongSampleContainer
@@ -24,9 +25,7 @@ const MusicAtLocationPage = ({ route, navigation }) => {
 						rating={4.5}
 					/>
 				</TouchableOpacity>
-				<TouchableOpacity
-					onPress={() => handleSamplePress('222', route.params.nearbyMusic)}
-				>
+				<TouchableOpacity onPress={() => handleSamplePress('222', nearbyMusic)}>
 					<SongSampleContainer
 						title="Song 2"
 						date="01-01-2023"

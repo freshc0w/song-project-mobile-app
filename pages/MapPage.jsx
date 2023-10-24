@@ -41,6 +41,7 @@ const MapPage = ({ setNearbyMusic }) => {
 	useEffect(() => {
 		const fetchLocations = async () => {
 			const locations = await locationsServices.getLocations();
+      console.log("locations fetched and setting map state")
 			const formattedLocations = locations
 				.filter(location => location.sharing)
 				.map(location => {
@@ -66,11 +67,11 @@ const MapPage = ({ setNearbyMusic }) => {
 		const locationsWithinRange = mapState.locations.filter(location =>
 			isPointWithinRadius(location.coords, userLocation, radius)
 		);
-
 		return locationsWithinRange;
 	};
 
 	const findNearestLocation = (userLocation, viableLocations) => {
+    console.log("FINDING NEAREST LOCATION")
 		// if (!viableLocations.length) return null;
 		const nearestCoords = findNearest(
 			userLocation,
@@ -81,13 +82,14 @@ const MapPage = ({ setNearbyMusic }) => {
 			location => location.coords === nearestCoords
 		);
 
-		// set nearby music context
+		// set nearby music global state
 		setNearbyMusic(location || null);
 		return location;
 	};
 
 	useEffect(() => {
 		if (mapState.locationPermission) {
+      console.log("REQUESTING PERMISSION FROM USER")
 			const subscription = Location.watchPositionAsync(
 				{
 					accuracy: Location.Accuracy.High,
@@ -119,7 +121,7 @@ const MapPage = ({ setNearbyMusic }) => {
 			//   }
 			// };
 		}
-	}, [mapState.locationPermission]);
+	}, [mapState.locations]);
 
 	return (
 		<View style={additionalStyles.mapViewContainer}>
@@ -136,6 +138,7 @@ const MapPage = ({ setNearbyMusic }) => {
 				customMapStyle={isDark ? darkMapStyle : null}
 				// customMapStyle={darkMapStyle}
 			>
+				{/* // TODO: CHANGE CIRCLE CONFIGURATION */}
 				{mapState.locations.map(location => (
 					<Circle
 						key={location.id}
