@@ -114,12 +114,15 @@ const MapPage = ({ setNearbyMusic }) => {
 					});
 				}
 			);
-
-			// return () => {
-			//   if (subscription) {
-			//     subscription.remove();
-			//   }
-			// };
+			return () => {
+			  if (subscription) {
+          console.log("removing subscription")
+			    subscription.then(res => {
+            console.log("removing subscription FOR REAL")
+            return res.remove();
+          });
+			  }
+			};
 		}
 	}, [mapState.locations]);
 
