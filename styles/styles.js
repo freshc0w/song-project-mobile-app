@@ -209,6 +209,8 @@ export const additionalStyles = StyleSheet.create({
 		fontSize: 16,
 		color: colors[mode].fgColor,
 	},
+  webViewContainer: {
+  }
 });
 
 export const darkMapStyle = [

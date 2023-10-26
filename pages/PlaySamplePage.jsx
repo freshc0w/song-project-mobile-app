@@ -1,4 +1,5 @@
 import { SafeAreaView, Text, View, TouchableOpacity } from 'react-native';
+import { WebView } from 'react-native-webview';
 import NearbyAndPlayHeader from '../components/NearbyAndPlayHeader';
 import {
 	styles,
@@ -9,18 +10,61 @@ import {
 } from '../styles/styles';
 import { Rating } from 'react-native-ratings';
 import UserContainer from '../components/UserContainer';
+import { useState, useRef } from 'react';
 
-// ? Use Webview
 const PlaySamplePage = ({ route, navigation }) => {
 	// * Probably pass the song itself instead of the song id?
 	const { nearbyMusic, currProfile } = route.params;
+	const [webState, setWebState] = useState({
+		loaded: false,
+		actioned: false,
+	});
+
+	const webRef = useRef();
+
+	const webLoaded = () => {
+		setWebState({
+			...webState,
+			loaded: true,
+		});
+	};
+
+	const handleWebActionPress = () => {
+		console.log('pressing button');
+
+		webRef.current.injectJavaScript(
+			!webState.actioned ? 'playSong()' : 'stopSong()'
+		);
+		setWebState({
+			...webState,
+			actioned: !webState.actioned,
+		});
+	};
+
 	return (
 		<SafeAreaView style={styles.nearbyAndPlayContainer}>
-			<NearbyAndPlayHeader locationName={!nearbyMusic ? null : nearbyMusic.name} />
+			<NearbyAndPlayHeader
+				locationName={!nearbyMusic ? null : nearbyMusic.name}
+			/>
 			<Text style={styles.songName}>Song 1</Text>
-			<TouchableOpacity style={styles.playButton}>
+			<View>
+				<WebView
+					style={{ height: 0, width: 0 }}
+					ref={ref => (webRef.current = ref)}
+					originWhitelist={['*']}
+					source={{
+						uri: 'https://comp2140.uqcloud.net/static/samples/index.html',
+					}}
+					pullToRefreshEnabled={true}
+					onLoad={webLoaded}
+				/>
+			</View>
+			<TouchableOpacity
+				onPress={handleWebActionPress}
+				style={styles.playButton}
+			>
 				<Text style={{ color: colors[mode].bgColor, fontWeight: 'bold' }}>
-					Play Music
+					{webState.actioned ? 'Stop Music' : 'Play Music'}
 				</Text>
 			</TouchableOpacity>
 			<Rating
