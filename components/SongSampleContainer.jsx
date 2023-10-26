@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import {
 	styles,
 	colors,
@@ -7,13 +7,47 @@ import {
 	isDark,
 } from '../styles/styles';
 import { Rating } from 'react-native-ratings';
+import { useState, useEffect } from 'react';
+import samplesService from '../services/samples';
 
-const SongSampleContainer = ({ title, date, rating }) => {
+const SongSampleContainer = ({
+	sample,
+	handleSamplePressNavigation,
+	nearbyMusic,
+}) => {
+	console.log('current sample', sample);
+	const [currSongSample, setCurrSongSample] = useState({
+		name: 'dummy',
+	});
+
+	useEffect(() => {
+		const fetchSongSample = async () => {
+			const songSample = await samplesService.getOneMusicSample(
+				sample.sample_id
+			);
+			setCurrSongSample(songSample);
+		};
+		fetchSongSample();
+	}, []);
+
+	// Formats date time into 'DD-MM-YYYY'
+	const formatDateTime = datetime => {
+		const date = new Date(datetime);
+		return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+	};
+
 	return (
-		<View style={additionalStyles.songSampleContainer}>
+		<TouchableOpacity
+			onPress={() => handleSamplePressNavigation(sample.id, nearbyMusic)}
+			style={additionalStyles.songSampleContainer}
+		>
 			<View style={additionalStyles.songSampleInfo}>
-				<Text style={additionalStyles.songSampleTextInfo}>{title}</Text>
-				<Text style={additionalStyles.songSampleTextInfo}>{date}</Text>
+				<Text style={additionalStyles.songSampleTextInfo}>
+					{currSongSample.name}
+				</Text>
+				<Text style={additionalStyles.songSampleTextInfo}>
+					{formatDateTime(sample.datetime)}
+				</Text>
 			</View>
 			<Rating
 				style={styles.ratingComponent}
@@ -23,9 +57,9 @@ const SongSampleContainer = ({ title, date, rating }) => {
 				imageSize={25}
 				fractions={1}
 				readonly
-				startingValue={rating}
+				startingValue={0}
 			/>
-		</View>
+		</TouchableOpacity>
 	);
 };
 

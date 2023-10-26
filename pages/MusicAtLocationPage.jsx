@@ -2,15 +2,32 @@ import { SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
 import { styles } from '../styles/styles';
 import SongSampleContainer from '../components/SongSampleContainer';
 import NearbyAndPlayHeader from '../components/NearbyAndPlayHeader';
+import { useState, useEffect } from 'react';
+import sampleToLocationsService from '../services/sampleToLocations';
 
 const MusicAtLocationPage = ({ nearbyMusic, route, navigation }) => {
-	console.log('checking all nearby music at location:', nearbyMusic);
+	const [sampleList, setSampleList] = useState([]);
 	const handleSamplePress = (id, nearbyMusic) => {
 		navigation.navigate('Play Sample', {
 			locationId: id,
 			nearbyMusic,
 		});
 	};
+
+	useEffect(() => {
+		const fetchMusicSamples = async id => {
+			const samples = await sampleToLocationsService.getAllSamplesFromLocation(
+				id
+			);
+			console.log('samples fetched:', samples);
+			setSampleList(samples);
+		};
+
+		console.log(nearbyMusic.id);
+		if (!nearbyMusic || !nearbyMusic.id) return;
+		fetchMusicSamples(nearbyMusic.id);
+	}, []);
+
 	// Passed the NEARBY MUSIC PARAMS
 	return (
 		<SafeAreaView style={styles.nearbyAndPlayContainer}>
@@ -18,7 +35,17 @@ const MusicAtLocationPage = ({ nearbyMusic, route, navigation }) => {
 				locationName={!nearbyMusic ? null : nearbyMusic.name}
 			/>
 			<ScrollView>
-				<TouchableOpacity onPress={() => handleSamplePress('111', nearbyMusic)}>
+				{sampleList.map(sample => {
+					return (
+						<SongSampleContainer
+              key={sample.id}
+							sample={sample}
+							handleSamplePressNavigation={handleSamplePress}
+							nearbyMusic={nearbyMusic}
+						/>
+					);
+				})}
+				{/* <TouchableOpacity onPress={() => handleSamplePress('111', nearbyMusic)}>
 					<SongSampleContainer
 						title="Song 1"
 						date="01-01-2023"
@@ -31,7 +58,7 @@ const MusicAtLocationPage = ({ nearbyMusic, route, navigation }) => {
 						date="01-01-2023"
 						rating={3}
 					/>
-				</TouchableOpacity>
+				</TouchableOpacity> */}
 			</ScrollView>
 		</SafeAreaView>
 	);

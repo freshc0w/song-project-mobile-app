@@ -10,7 +10,8 @@ import {
 } from '../styles/styles';
 import { Rating } from 'react-native-ratings';
 import UserContainer from '../components/UserContainer';
-import { useState, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import sampleToLocationsService from '../services/sampleToLocations'
 
 const PlaySamplePage = ({ route, navigation }) => {
 	// * Probably pass the song itself instead of the song id?
@@ -21,6 +22,11 @@ const PlaySamplePage = ({ route, navigation }) => {
 	});
 
 	const webRef = useRef();
+  
+  useEffect(() => {
+    const fetchMusicSample = id => {
+    }
+  })
 
 	const webLoaded = () => {
 		setWebState({
