@@ -96,9 +96,14 @@ const MapPage = ({ setNearbyMusic }) => {
 					distanceInterval: 10, // 10m
 				},
 				location => {
+					// const userLocation = {
+					// 	latitude: location.coords.latitude,
+					// 	longitude: location.coords.longitude,
+					// };
+          // * TEMPORARY
 					const userLocation = {
-						latitude: location.coords.latitude,
-						longitude: location.coords.longitude,
+						latitude: mapState?.locations[1].latitude,
+						longitude: mapState?.locations[1].longitude,
 					};
 					const nearestLocation = findNearestLocation(
 						userLocation,

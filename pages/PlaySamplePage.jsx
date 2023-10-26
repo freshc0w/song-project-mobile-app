@@ -11,22 +11,31 @@ import {
 import { Rating } from 'react-native-ratings';
 import UserContainer from '../components/UserContainer';
 import { useState, useEffect, useRef } from 'react';
-import sampleToLocationsService from '../services/sampleToLocations'
+import sampleToLocationsService from '../services/sampleToLocations';
 
 const PlaySamplePage = ({ route, navigation }) => {
 	// * Probably pass the song itself instead of the song id?
 	const { nearbyMusic, currProfile } = route.params;
+  const [hasNavigationTransitioned, setHasNavigationTransitioned] = useState(false);
 	const [webState, setWebState] = useState({
 		loaded: false,
 		actioned: false,
 	});
 
 	const webRef = useRef();
+
+	// useEffect(() => {
+	//   const fetchMusicSample = id => {
+	//   }
+	// })
+
+  useEffect(() => navigation.addListener('transitionEnd', () => {
+    setHasNavigationTransitioned(true);
+  }), [navigation, setHasNavigationTransitioned]);
   
-  useEffect(() => {
-    const fetchMusicSample = id => {
-    }
-  })
+  useEffect(() => navigation.addListener('blur', () => { 
+    setHasNavigationTransitioned(false);
+  }), [navigation, setHasNavigationTransitioned]);
 
 	const webLoaded = () => {
 		setWebState({
@@ -54,17 +63,19 @@ const PlaySamplePage = ({ route, navigation }) => {
 			/>
 			<Text style={styles.songName}>Song 1</Text>
 			<View>
-				<WebView
-					style={{ height: 0, width: 0 }}
-					ref={ref => (webRef.current = ref)}
-					originWhitelist={['*']}
-					source={{
-						uri: 'https://comp2140.uqcloud.net/static/samples/index.html',
-					}}
-					pullToRefreshEnabled={true}
-					onLoad={webLoaded}
-				/>
+				{hasNavigationTransitioned ? (
+					<WebView
+						ref={ref => (webRef.current = ref)}
+						originWhitelist={['*']}
+						source={{
+							uri: 'https://comp2140.uqcloud.net/static/samples/index.html',
+						}}
+						pullToRefreshEnabled={true}
+						onLoad={webLoaded}
+					/>
+				) : null}
 			</View>
+
 			<TouchableOpacity
 				onPress={handleWebActionPress}
 				style={styles.playButton}

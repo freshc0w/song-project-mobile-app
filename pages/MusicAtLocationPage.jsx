@@ -1,5 +1,5 @@
-import { SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
-import { styles } from '../styles/styles';
+import { Text, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
+import { styles, colors } from '../styles/styles';
 import SongSampleContainer from '../components/SongSampleContainer';
 import NearbyAndPlayHeader from '../components/NearbyAndPlayHeader';
 import { useState, useEffect } from 'react';
@@ -23,7 +23,6 @@ const MusicAtLocationPage = ({ nearbyMusic, route, navigation }) => {
 			setSampleList(samples);
 		};
 
-		console.log(nearbyMusic.id);
 		if (!nearbyMusic || !nearbyMusic.id) return;
 		fetchMusicSamples(nearbyMusic.id);
 	}, []);
@@ -34,11 +33,17 @@ const MusicAtLocationPage = ({ nearbyMusic, route, navigation }) => {
 			<NearbyAndPlayHeader
 				locationName={!nearbyMusic ? null : nearbyMusic.name}
 			/>
+			{!nearbyMusic && (
+				<Text style={{ color: colors.whiteColor }}>
+					Not close to any locations with samples. Check the Map page for closer
+					locations
+				</Text>
+			)}
 			<ScrollView>
 				{sampleList.map(sample => {
 					return (
 						<SongSampleContainer
-              key={sample.id}
+							key={sample.id}
 							sample={sample}
 							handleSamplePressNavigation={handleSamplePress}
 							nearbyMusic={nearbyMusic}
