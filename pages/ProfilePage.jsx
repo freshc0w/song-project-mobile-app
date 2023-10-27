@@ -1,16 +1,10 @@
-import {
-	Text,
-	Image,
-	View,
-	SafeAreaView,
-	TouchableOpacity,
-	TextInput,
-	KeyboardAvoidingView,
-} from 'react-native';
+import { Text, View, TextInput, KeyboardAvoidingView } from 'react-native';
 import { useState, useEffect } from 'react';
-import { styles, colors, additionalStyles, mode } from '../styles/styles';
 import * as ImagePicker from 'expo-image-picker';
+import { styles, additionalStyles } from '../styles/styles';
+
 import PhotoContainer from '../components/PhotoContainer';
+import ActiveBtn from '../components/ActiveBtn';
 
 const ProfilePage = ({ currProfile, handleSetProfile }) => {
 	const [photo, setPhoto] = useState({});
@@ -22,6 +16,7 @@ const ProfilePage = ({ currProfile, handleSetProfile }) => {
 			name: profileName,
 		});
 	}, [profileName]);
+
 	const handleChangePhotoPress = async () => {
 		const result = await ImagePicker.launchImageLibraryAsync({
 			mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -53,24 +48,30 @@ const ProfilePage = ({ currProfile, handleSetProfile }) => {
 				<Text style={styles.heading}>Edit Profile</Text>
 				<Text style={styles.subHeading}>Mirror, Mirror On The Wall...</Text>
 			</View>
+
 			<PhotoContainer photo={photo} />
-			<TouchableOpacity
-				style={!photo.uri ? styles.addPhoto : styles.changePhoto}
-			>
-				<Text
-					style={{ color: colors[mode].bgColor }}
+
+			{!photo.uri ? (
+				<ActiveBtn
 					onPress={handleChangePhotoPress}
-				>
-					{!photo.uri ? 'Add Photo' : 'Change Photo'}
-				</Text>
-			</TouchableOpacity>
+					text="Add Photo"
+					touchableStyles={styles.addPhoto}
+				/>
+			) : (
+				<ActiveBtn
+					onPress={handleChangePhotoPress}
+					text="Change Photo"
+					touchableStyles={styles.changePhoto}
+				/>
+			)}
+
 			<View>
 				<TextInput
 					style={styles.input}
 					placeholder="Enter your name"
 					value={profileName}
 					onChangeText={setProfileName}
-				></TextInput>
+				/>
 			</View>
 		</KeyboardAvoidingView>
 	);

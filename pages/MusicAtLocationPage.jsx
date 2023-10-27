@@ -1,7 +1,9 @@
 import { Text, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
-import { styles, colors } from '../styles/styles';
+import { styles, colors, mode } from '../styles/styles';
+import utils from '../config/utils';
 import SongSampleContainer from '../components/SongSampleContainer';
 import NearbyAndPlayHeader from '../components/NearbyAndPlayHeader';
+import ErrorText from '../components/ErrorText';
 import { useState, useEffect } from 'react';
 import sampleToLocationsService from '../services/sampleToLocations';
 import ratingsService from '../services/ratings';
@@ -60,12 +62,17 @@ const MusicAtLocationPage = ({ nearbyMusic, route, navigation }) => {
 			<NearbyAndPlayHeader
 				locationName={!nearbyMusic ? null : nearbyMusic.name}
 			/>
-			{!nearbyMusic && (
-				<Text style={{ color: colors.whiteColor }}>
+			{/* {!nearbyMusic && (
+				<Text style={{ color: colors[mode].bgColor }}>
 					Not close to any locations with samples. Check the Map page for closer
 					locations
 				</Text>
-			)}
+			)} */}
+			<ErrorText
+				condition={!nearbyMusic}
+				text={utils.NOT_CLOSE_TO_LOCATION_MSG}
+			/>
+
 			<ScrollView>
 				{sampleList.map(sample => {
 					return (

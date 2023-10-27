@@ -1,6 +1,6 @@
 import { SafeAreaView, Text, View, TouchableOpacity } from 'react-native';
 import { WebView } from 'react-native-webview';
-import NearbyAndPlayHeader from '../components/NearbyAndPlayHeader';
+import { Rating } from 'react-native-ratings';
 import {
 	styles,
 	additionalStyles,
@@ -8,8 +8,10 @@ import {
 	mode,
 	isDark,
 } from '../styles/styles';
-import { Rating } from 'react-native-ratings';
+import utils from '../config/utils';
+import NearbyAndPlayHeader from '../components/NearbyAndPlayHeader';
 import UserContainer from '../components/UserContainer';
+import ErrorText from '../components/ErrorText';
 import { useState, useEffect, useRef } from 'react';
 import ratingsService from '../services/ratings';
 
@@ -107,7 +109,7 @@ const PlaySamplePage = ({ route, navigation }) => {
 			<NearbyAndPlayHeader
 				locationName={!nearbyMusic ? null : nearbyMusic.name}
 			/>
-			<Text style={styles.songName}>Song 1</Text>
+			<Text style={styles.songName}>{currSongSample.name}</Text>
 			<View>
 				{hasNavigationTransitioned ? (
 					<WebView
@@ -141,17 +143,11 @@ const PlaySamplePage = ({ route, navigation }) => {
 				onFinishRating={handleRatingChange}
 			/>
 
-			{reloadErr && (
-				<Text
-					style={{
-						color: colors[mode].fgColor,
-						textAlign: 'center',
-						marginTop: 10,
-					}}
-				>
-					Reload the page to play the song
-				</Text>
-			)}
+			<ErrorText
+				condition={reloadErr}
+				text={utils.RELOAD_TO_PLAY_MSG}
+				addedStyles={{ marginTop: 10, textAlign: 'center' }}
+			/>
 
 			<View style={additionalStyles.currentLocationStatusContainer}>
 				<Text style={additionalStyles.currentLocationStatusHeading}>
@@ -159,7 +155,7 @@ const PlaySamplePage = ({ route, navigation }) => {
 				</Text>
 				<UserContainer
 					profilePic={currProfile.profilePic}
-					userName={currProfile.name}
+					userName={currProfile.name || 'Create your profile and add a name!'}
 				/>
 				<UserContainer />
 			</View>
