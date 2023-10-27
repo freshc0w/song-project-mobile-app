@@ -11,12 +11,12 @@ import {
 import { Rating } from 'react-native-ratings';
 import UserContainer from '../components/UserContainer';
 import { useState, useEffect, useRef } from 'react';
-import sampleToLocationsService from '../services/sampleToLocations';
 
 const PlaySamplePage = ({ route, navigation }) => {
 	// * Probably pass the song itself instead of the song id?
 	const { nearbyMusic, currProfile, currSongSample } = route.params;
-  const [hasNavigationTransitioned, setHasNavigationTransitioned] = useState(false);
+	const [hasNavigationTransitioned, setHasNavigationTransitioned] =
+		useState(false);
 	const [webState, setWebState] = useState({
 		loaded: false,
 		actioned: false,
@@ -24,18 +24,21 @@ const PlaySamplePage = ({ route, navigation }) => {
 
 	const webRef = useRef();
 
-	// useEffect(() => {
-	//   const fetchMusicSample = id => {
-	//   }
-	// })
+	useEffect(
+		() =>
+			navigation.addListener('transitionEnd', () => {
+				setHasNavigationTransitioned(true);
+			}),
+		[navigation, setHasNavigationTransitioned]
+	);
 
-  useEffect(() => navigation.addListener('transitionEnd', () => {
-    setHasNavigationTransitioned(true);
-  }), [navigation, setHasNavigationTransitioned]);
-  
-  useEffect(() => navigation.addListener('blur', () => { 
-    setHasNavigationTransitioned(false);
-  }), [navigation, setHasNavigationTransitioned]);
+	useEffect(
+		() =>
+			navigation.addListener('blur', () => {
+				setHasNavigationTransitioned(false);
+			}),
+		[navigation, setHasNavigationTransitioned]
+	);
 
 	const webLoaded = () => {
 		setWebState({
