@@ -15,6 +15,7 @@ import { useState, useEffect, useRef } from 'react';
 const PlaySamplePage = ({ route, navigation }) => {
 	// * Probably pass the song itself instead of the song id?
 	const { nearbyMusic, currProfile, currSongSample } = route.params;
+	console.log('curr song sample', currSongSample);
 	const [hasNavigationTransitioned, setHasNavigationTransitioned] =
 		useState(false);
 	const [webState, setWebState] = useState({
@@ -47,12 +48,36 @@ const PlaySamplePage = ({ route, navigation }) => {
 		});
 	};
 
+	const stringifiedPlaySong = (songData, songType) => {
+		const strJsCode = `function playSong() {
+            song_data = JSON.parse(${JSON.stringify(songData)});
+            preparePreview(song_data, ${JSON.stringify(
+							songType
+						).toLowerCase()});
+            playPreview();
+    };
+            playSong();`;
+		console.log('stringified play song', strJsCode);
+		return strJsCode;
+	};
+
 	const handleWebActionPress = () => {
 		console.log('pressing button');
 
-		webRef.current.injectJavaScript(
-			!webState.actioned ? 'playSong()' : 'stopSong()'
-		);
+		if (!currSongSample.recording_data) {
+			webRef.current.injectJavaScript(
+				!webState.actioned ? 'playSong()' : 'stopSong()'
+			);
+		} else {
+			webRef.current.injectJavaScript(
+				!webState.actioned
+					? stringifiedPlaySong(
+							currSongSample.recording_data,
+							currSongSample.type
+					  )
+					: 'stopSong()'
+			);
+		}
 		setWebState({
 			...webState,
 			actioned: !webState.actioned,
