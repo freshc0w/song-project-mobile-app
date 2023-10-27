@@ -1,4 +1,4 @@
-import { SafeAreaView, Text, View, TouchableOpacity } from 'react-native';
+import { SafeAreaView, Text, View } from 'react-native';
 import { useState, useEffect, useRef } from 'react';
 import { WebView } from 'react-native-webview';
 import { Rating } from 'react-native-ratings';

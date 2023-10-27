@@ -140,7 +140,6 @@ const MapPage = ({ setNearbyMusic }) => {
 				style={additionalStyles.mapView}
 				provider={PROVIDER_GOOGLE}
 				customMapStyle={isDark ? darkMapStyle : null}
-				// customMapStyle={darkMapStyle}
 			>
 				{/* // TODO: CHANGE CIRCLE CONFIGURATION */}
 				{mapState.locations.map(location => (
