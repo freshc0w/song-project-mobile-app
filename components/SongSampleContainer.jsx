@@ -14,10 +14,10 @@ const SongSampleContainer = ({
 	sample,
 	handleSamplePressNavigation,
 	nearbyMusic,
+  avgRating,
 }) => {
-	console.log('current sample', sample);
 	const [currSongSample, setCurrSongSample] = useState({
-		name: 'dummy',
+		name: 'Song Sample',
 	});
 
 	useEffect(() => {
@@ -57,7 +57,7 @@ const SongSampleContainer = ({
 				imageSize={25}
 				fractions={1}
 				readonly
-				startingValue={0}
+				startingValue={avgRating}
 			/>
 		</TouchableOpacity>
 	);

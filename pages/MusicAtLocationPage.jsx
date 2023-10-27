@@ -4,14 +4,33 @@ import SongSampleContainer from '../components/SongSampleContainer';
 import NearbyAndPlayHeader from '../components/NearbyAndPlayHeader';
 import { useState, useEffect } from 'react';
 import sampleToLocationsService from '../services/sampleToLocations';
+import ratingsService from '../services/ratings';
 
 const MusicAtLocationPage = ({ nearbyMusic, route, navigation }) => {
 	const [sampleList, setSampleList] = useState([]);
+	const [ratingsList, setRatingsList] = useState([]);
 	const handleSamplePress = (nearbyMusic, currSongSample) => {
 		navigation.navigate('Play Sample', {
 			nearbyMusic,
-      currSongSample
+			currSongSample,
 		});
+	};
+
+	const calcAvgRating = (ratings, sampleId) => {
+		// if (!ratings.length) return 0;
+
+		const sampleRatings = ratings.filter(
+			rating => rating.sample_id === sampleId
+		);
+
+		if (!sampleRatings.length) return 0;
+
+		const ratingsSum = sampleRatings.reduce(
+			(sum, rating) => sum + rating.rating,
+			0
+		);
+
+		return ratingsSum / sampleRatings.length;
 	};
 
 	useEffect(() => {
@@ -26,6 +45,15 @@ const MusicAtLocationPage = ({ nearbyMusic, route, navigation }) => {
 		if (!nearbyMusic || !nearbyMusic.id) return;
 		fetchMusicSamples(nearbyMusic.id);
 	}, []);
+
+	useEffect(() => {
+		const fetchRatings = async () => {
+			const ratings = await ratingsService.getRatings();
+			setRatingsList(ratings);
+		};
+
+		fetchRatings();
+	}, [nearbyMusic]);
 
 	// Passed the NEARBY MUSIC PARAMS
 	return (
@@ -47,6 +75,7 @@ const MusicAtLocationPage = ({ nearbyMusic, route, navigation }) => {
 							sample={sample}
 							handleSamplePressNavigation={handleSamplePress}
 							nearbyMusic={nearbyMusic}
+							avgRating={calcAvgRating(ratingsList, sample.sample_id)}
 						/>
 					);
 				})}

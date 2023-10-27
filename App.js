@@ -1,4 +1,4 @@
-import { Text, View } from 'react-native';
+// DISCLAMER: GITHUB COPILOT WAS USED TO HELP WITH THIS FILE
 import { useState, useEffect } from 'react';
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -15,6 +15,7 @@ const App = () => {
 			const data = await locationServices.getLocations();
 			setLocations(data);
 		};
+
 		fetchLocations();
 	}, []);
 
@@ -25,7 +26,7 @@ const App = () => {
 				setNearbyMusic={setNearbyMusic}
 				profile={profile}
 				setProfile={setProfile}
-        locations={locations}
+				locations={locations}
 			/>
 		</NavigationContainer>
 	);

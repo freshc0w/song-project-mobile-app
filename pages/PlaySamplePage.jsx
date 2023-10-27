@@ -11,11 +11,9 @@ import {
 import { Rating } from 'react-native-ratings';
 import UserContainer from '../components/UserContainer';
 import { useState, useEffect, useRef } from 'react';
+import ratingsService from '../services/ratings';
 
 const PlaySamplePage = ({ route, navigation }) => {
-	// * Probably pass the song itself instead of the song id?
-	const { nearbyMusic, currProfile, currSongSample } = route.params;
-	console.log('curr song sample', currSongSample);
 	const [hasNavigationTransitioned, setHasNavigationTransitioned] =
 		useState(false);
 	const [webState, setWebState] = useState({
@@ -23,6 +21,10 @@ const PlaySamplePage = ({ route, navigation }) => {
 		actioned: false,
 	});
 
+	const [hasRated, setHasRated] = useState(false);
+	const [currRating, setCurrRating] = useState(null);
+
+	const { nearbyMusic, currProfile, currSongSample } = route.params;
 	const webRef = useRef();
 
 	useEffect(
@@ -50,20 +52,16 @@ const PlaySamplePage = ({ route, navigation }) => {
 
 	const stringifiedPlaySong = (songData, songType) => {
 		const strJsCode = `function playSong() {
-            song_data = JSON.parse(${JSON.stringify(songData)});
-            preparePreview(song_data, ${JSON.stringify(
-							songType
-						).toLowerCase()});
+            songData = JSON.parse(${JSON.stringify(songData)});
+            preparePreview(songData, ${JSON.stringify(songType).toLowerCase()});
             playPreview();
     };
             playSong();`;
-		console.log('stringified play song', strJsCode);
+
 		return strJsCode;
 	};
 
 	const handleWebActionPress = () => {
-		console.log('pressing button');
-
 		if (!currSongSample.recording_data) {
 			webRef.current.injectJavaScript(
 				!webState.actioned ? 'playSong()' : 'stopSong()'
@@ -82,6 +80,26 @@ const PlaySamplePage = ({ route, navigation }) => {
 			...webState,
 			actioned: !webState.actioned,
 		});
+	};
+
+	const handleRatingChange = async rating => {
+		// If user hasn't rated yet, post rating
+		if (!hasRated) {
+			setHasRated(true);
+			const createdRating = await ratingsService.createRating(
+				currSongSample.id,
+				rating
+			);
+			setCurrRating(createdRating);
+			return createdRating;
+		}
+		setCurrRating(updatedRating);
+		// If user has rated, update rating
+		const updatedRating = await ratingsService.editRating(
+			currRating.id,
+			rating
+		);
+		return updatedRating;
 	};
 
 	return (
@@ -119,7 +137,12 @@ const PlaySamplePage = ({ route, navigation }) => {
 				ratingCount={5}
 				imageSize={30}
 				fractions={1}
-				startingValue={3}
+				startingValue={2.5}
+				onFinishRating={async rating => {
+					const newRating = await handleRatingChange(rating);
+					setCurrRating(newRating);
+					setHasRated(true);
+				}}
 			/>
 			<View style={additionalStyles.currentLocationStatusContainer}>
 				<Text style={additionalStyles.currentLocationStatusHeading}>
