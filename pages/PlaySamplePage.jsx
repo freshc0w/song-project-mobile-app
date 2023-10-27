@@ -23,6 +23,7 @@ const PlaySamplePage = ({ route, navigation }) => {
 
 	const [hasRated, setHasRated] = useState(false);
 	const [currRating, setCurrRating] = useState(null);
+	const [reloadErr, setReloadErr] = useState(false);
 
 	const { nearbyMusic, currProfile, currSongSample } = route.params;
 	const webRef = useRef();
@@ -62,6 +63,8 @@ const PlaySamplePage = ({ route, navigation }) => {
 	};
 
 	const handleWebActionPress = () => {
+		if (!webRef.current) return setReloadErr(true);
+
 		if (!currSongSample.recording_data) {
 			webRef.current.injectJavaScript(
 				!webState.actioned ? 'playSong()' : 'stopSong()'
@@ -85,16 +88,13 @@ const PlaySamplePage = ({ route, navigation }) => {
 	const handleRatingChange = async rating => {
 		// If user hasn't rated yet, post rating
 		if (!hasRated) {
-			setHasRated(true);
 			const createdRating = await ratingsService.createRating(
 				currSongSample.id,
 				rating
 			);
-			setCurrRating(createdRating);
+			setHasRated(true);
 			return createdRating;
 		}
-		setCurrRating(updatedRating);
-		// If user has rated, update rating
 		const updatedRating = await ratingsService.editRating(
 			currRating.id,
 			rating
@@ -138,12 +138,21 @@ const PlaySamplePage = ({ route, navigation }) => {
 				imageSize={30}
 				fractions={1}
 				startingValue={2.5}
-				onFinishRating={async rating => {
-					const newRating = await handleRatingChange(rating);
-					setCurrRating(newRating);
-					setHasRated(true);
-				}}
+				onFinishRating={handleRatingChange}
 			/>
+
+			{reloadErr && (
+				<Text
+					style={{
+						color: colors[mode].fgColor,
+						textAlign: 'center',
+						marginTop: 10,
+					}}
+				>
+					Reload the page to play the song
+				</Text>
+			)}
+
 			<View style={additionalStyles.currentLocationStatusContainer}>
 				<Text style={additionalStyles.currentLocationStatusHeading}>
 					Currently At This Location

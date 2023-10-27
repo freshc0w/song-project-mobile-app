@@ -38,7 +38,6 @@ const MusicAtLocationPage = ({ nearbyMusic, route, navigation }) => {
 			const samples = await sampleToLocationsService.getAllSamplesFromLocation(
 				id
 			);
-			console.log('samples fetched:', samples);
 			setSampleList(samples);
 		};
 

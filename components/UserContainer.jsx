@@ -3,7 +3,6 @@ import { styles, additionalStyles } from '../styles/styles';
 import { getIcons } from '../config/baseConfig';
 
 const UserContainer = ({ profilePic, userName }) => {
-	console.log('profile pic', profilePic);
 	return (
 		<SafeAreaView style={additionalStyles.currentLocationStatusUserContainer}>
 			<Image

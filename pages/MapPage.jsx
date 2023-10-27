@@ -41,7 +41,6 @@ const MapPage = ({ setNearbyMusic }) => {
 	useEffect(() => {
 		const fetchLocations = async () => {
 			const locations = await locationsServices.getLocations();
-			console.log('locations fetched and setting map state');
 			const formattedLocations = locations
 				.filter(location => location.sharing)
 				.map(location => {
@@ -71,7 +70,6 @@ const MapPage = ({ setNearbyMusic }) => {
 	};
 
 	const findNearestLocation = (userLocation, viableLocations) => {
-		console.log('FINDING NEAREST LOCATION');
 		// if (!viableLocations.length) return null;
 		const nearestCoords = findNearest(
 			userLocation,
@@ -89,7 +87,6 @@ const MapPage = ({ setNearbyMusic }) => {
 
 	useEffect(() => {
 		if (mapState.locationPermission) {
-			console.log('REQUESTING PERMISSION FROM USER');
 			const subscription = Location.watchPositionAsync(
 				{
 					accuracy: Location.Accuracy.High,

@@ -9,33 +9,34 @@ import PlaySamplePage from '../pages/PlaySamplePage';
 
 import { tabBarOptions, getIcons } from '../config/baseConfig';
 import { createStackNavigator } from '@react-navigation/stack';
+import PlayMusicStackScreen from './PlayMusicStackScreen';
 
 const Tab = createBottomTabNavigator();
-const PlayMusicStack = createStackNavigator();
+// const PlayMusicStack = createStackNavigator();
 
-const PlayMusicStackScreen = ({ nearbyMusic, currProfile }) => {
-	return (
-		<PlayMusicStack.Navigator
-			screenOptions={{ headerShown: false }}
-			initialRouteName="Samples At Location"
-		>
-			<PlayMusicStack.Screen
-				name="Play Sample"
-				component={PlaySamplePage}
-				initialParams={{ currProfile }}
-			/>
-			<PlayMusicStack.Screen
-				name="Samples At Location"
-				children={({ navigation }) => (
-					<MusicAtLocationPage
-						nearbyMusic={nearbyMusic}
-						navigation={navigation}
-					/>
-				)}
-			/>
-		</PlayMusicStack.Navigator>
-	);
-};
+// const PlayMusicStackScreen = ({ nearbyMusic, currProfile }) => {
+// 	return (
+// 		<PlayMusicStack.Navigator
+// 			screenOptions={{ headerShown: false }}
+// 			initialRouteName="Samples At Location"
+// 		>
+// 			<PlayMusicStack.Screen
+// 				name="Play Sample"
+// 				component={PlaySamplePage}
+// 				initialParams={{ currProfile }}
+// 			/>
+// 			<PlayMusicStack.Screen
+// 				name="Samples At Location"
+// 				children={({ navigation }) => (
+// 					<MusicAtLocationPage
+// 						nearbyMusic={nearbyMusic}
+// 						navigation={navigation}
+// 					/>
+// 				)}
+// 			/>
+// 		</PlayMusicStack.Navigator>
+// 	);
+// };
 
 const Footer = ({
 	nearbyMusic,
