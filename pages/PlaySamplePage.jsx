@@ -15,7 +15,7 @@ import sampleToLocationsService from '../services/sampleToLocations';
 
 const PlaySamplePage = ({ route, navigation }) => {
 	// * Probably pass the song itself instead of the song id?
-	const { nearbyMusic, currProfile } = route.params;
+	const { nearbyMusic, currProfile, currSongSample } = route.params;
   const [hasNavigationTransitioned, setHasNavigationTransitioned] = useState(false);
 	const [webState, setWebState] = useState({
 		loaded: false,

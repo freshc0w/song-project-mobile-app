@@ -38,7 +38,7 @@ const SongSampleContainer = ({
 
 	return (
 		<TouchableOpacity
-			onPress={() => handleSamplePressNavigation('111', nearbyMusic)}
+			onPress={() => handleSamplePressNavigation(nearbyMusic, currSongSample)}
 			style={additionalStyles.songSampleContainer}
 		>
 			<View style={additionalStyles.songSampleInfo}>

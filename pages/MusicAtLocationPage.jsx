@@ -7,10 +7,10 @@ import sampleToLocationsService from '../services/sampleToLocations';
 
 const MusicAtLocationPage = ({ nearbyMusic, route, navigation }) => {
 	const [sampleList, setSampleList] = useState([]);
-	const handleSamplePress = (id, nearbyMusic) => {
+	const handleSamplePress = (nearbyMusic, currSongSample) => {
 		navigation.navigate('Play Sample', {
-			locationId: id,
 			nearbyMusic,
+      currSongSample
 		});
 	};
 
@@ -50,20 +50,6 @@ const MusicAtLocationPage = ({ nearbyMusic, route, navigation }) => {
 						/>
 					);
 				})}
-				{/* <TouchableOpacity onPress={() => handleSamplePress('111', nearbyMusic)}>
-					<SongSampleContainer
-						title="Song 1"
-						date="01-01-2023"
-						rating={4.5}
-					/>
-				</TouchableOpacity>
-				<TouchableOpacity onPress={() => handleSamplePress('222', nearbyMusic)}>
-					<SongSampleContainer
-						title="Song 2"
-						date="01-01-2023"
-						rating={3}
-					/>
-				</TouchableOpacity> */}
 			</ScrollView>
 		</SafeAreaView>
 	);

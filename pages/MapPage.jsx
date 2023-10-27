@@ -41,7 +41,7 @@ const MapPage = ({ setNearbyMusic }) => {
 	useEffect(() => {
 		const fetchLocations = async () => {
 			const locations = await locationsServices.getLocations();
-      console.log("locations fetched and setting map state")
+			console.log('locations fetched and setting map state');
 			const formattedLocations = locations
 				.filter(location => location.sharing)
 				.map(location => {
@@ -71,7 +71,7 @@ const MapPage = ({ setNearbyMusic }) => {
 	};
 
 	const findNearestLocation = (userLocation, viableLocations) => {
-    console.log("FINDING NEAREST LOCATION")
+		console.log('FINDING NEAREST LOCATION');
 		// if (!viableLocations.length) return null;
 		const nearestCoords = findNearest(
 			userLocation,
@@ -89,22 +89,22 @@ const MapPage = ({ setNearbyMusic }) => {
 
 	useEffect(() => {
 		if (mapState.locationPermission) {
-      console.log("REQUESTING PERMISSION FROM USER")
+			console.log('REQUESTING PERMISSION FROM USER');
 			const subscription = Location.watchPositionAsync(
 				{
 					accuracy: Location.Accuracy.High,
 					distanceInterval: 10, // 10m
 				},
 				location => {
-					// const userLocation = {
-					// 	latitude: location.coords.latitude,
-					// 	longitude: location.coords.longitude,
-					// };
-          // * TEMPORARY
 					const userLocation = {
-						latitude: mapState?.locations[1].latitude,
-						longitude: mapState?.locations[1].longitude,
+						latitude: location.coords.latitude,
+						longitude: location.coords.longitude,
 					};
+					// * TEMPORARY
+					// const userLocation = {
+					// 	latitude: mapState?.locations[1].latitude,
+					// 	longitude: mapState?.locations[1].longitude,
+					// };
 					const nearestLocation = findNearestLocation(
 						userLocation,
 						findViableLocations(userLocation, CHECK_LOCATION_RADIUS)
@@ -120,13 +120,12 @@ const MapPage = ({ setNearbyMusic }) => {
 				}
 			);
 			return () => {
-			  if (subscription) {
-          console.log("removing subscription")
-			    subscription.then(res => {
-            console.log("removing subscription FOR REAL")
-            return res.remove();
-          });
-			  }
+				if (subscription) {
+					subscription.then(res => {
+						console.log('Cleaning up: Removing Subscription..');
+						return res.remove();
+					});
+				}
 			};
 		}
 	}, [mapState.locations]);
