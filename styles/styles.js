@@ -146,6 +146,7 @@ export const styles = {
 	},
 };
 
+// Additional styles added for the purpose of this assignment
 export const additionalStyles = StyleSheet.create({
 	middleTabIcon: {
 		width: 100,
@@ -209,8 +210,7 @@ export const additionalStyles = StyleSheet.create({
 		fontSize: 16,
 		color: colors[mode].fgColor,
 	},
-  webViewContainer: {
-  }
+	webViewContainer: {},
 });
 
 export const darkMapStyle = [

@@ -6,6 +6,13 @@ import { styles, additionalStyles } from '../styles/styles';
 import PhotoContainer from '../components/PhotoContainer';
 import ActiveBtn from '../components/ActiveBtn';
 
+/**
+ * Profile page of the app. Allows user to edit their profile picture and name.
+ *
+ * @param {Object} currProfile Current profile data containing name and profile picture uri.
+ * @param {Function} handleSetProfile Function to update global state with new profile data.
+ * @returns {JSX.Element}
+ */
 const ProfilePage = ({ currProfile, handleSetProfile }) => {
 	const [photo, setPhoto] = useState({});
 	const [profileName, setProfileName] = useState('');

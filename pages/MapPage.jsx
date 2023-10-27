@@ -8,6 +8,12 @@ import { findNearest, isPointWithinRadius } from 'geolib';
 
 import locationsServices from '../services/locations';
 
+/**
+ * Map page of the app. Displays a map with a circle with a radius of 100m around each location listed in the api.
+ *
+ * @param {Function} setNearbyMusic Handles setting the nearby music global state
+ * @returns {JSX.Element}
+ */
 const MapPage = ({ setNearbyMusic }) => {
 	const CHECK_LOCATION_RADIUS = 100;
 

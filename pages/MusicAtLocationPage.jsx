@@ -8,7 +8,16 @@ import { useState, useEffect } from 'react';
 import sampleToLocationsService from '../services/sampleToLocations';
 import ratingsService from '../services/ratings';
 
-const MusicAtLocationPage = ({ nearbyMusic, route, navigation }) => {
+/**
+ * Displays a list of music samples at a location.
+ *
+ * User can click on one of these samples to navigate to the Play Sample page, where they can play it.
+ *
+ * @param {Object | null} nearbyMusic Displays information of the nearby music location
+ * @param {Object} navigation Navigation actions for Tab stacks
+ * @returns {JSX.Element}
+ */
+const MusicAtLocationPage = ({ nearbyMusic, navigation }) => {
 	const [sampleList, setSampleList] = useState([]);
 	const [ratingsList, setRatingsList] = useState([]);
 	const handleSamplePress = (nearbyMusic, currSongSample) => {

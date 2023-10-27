@@ -19,6 +19,15 @@ import ActiveBtn from '../components/ActiveBtn';
 
 import ratingsService from '../services/ratings';
 
+/**
+ * Page for playing a sample, using a WebView.
+ *
+ * Also allows user to rate the sample.
+ *
+ * @param {Object} route Routing information for Tab stacks
+ * @param {Object} navigation Navigation actions for Tab stacks
+ * @returns {JSX.Element}
+ */
 const PlaySamplePage = ({ route, navigation }) => {
 	const [hasNavigationTransitioned, setHasNavigationTransitioned] =
 		useState(false);
