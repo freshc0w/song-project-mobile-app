@@ -1,6 +1,8 @@
 import { SafeAreaView, Text, View, TouchableOpacity } from 'react-native';
+import { useState, useEffect, useRef } from 'react';
 import { WebView } from 'react-native-webview';
 import { Rating } from 'react-native-ratings';
+
 import {
 	styles,
 	additionalStyles,
@@ -9,10 +11,12 @@ import {
 	isDark,
 } from '../styles/styles';
 import utils from '../config/utils';
+
 import NearbyAndPlayHeader from '../components/NearbyAndPlayHeader';
 import UserContainer from '../components/UserContainer';
 import ErrorText from '../components/ErrorText';
-import { useState, useEffect, useRef } from 'react';
+import ActiveBtn from '../components/ActiveBtn';
+
 import ratingsService from '../services/ratings';
 
 const PlaySamplePage = ({ route, navigation }) => {
@@ -97,6 +101,7 @@ const PlaySamplePage = ({ route, navigation }) => {
 			setHasRated(true);
 			return createdRating;
 		}
+
 		const updatedRating = await ratingsService.editRating(
 			currRating.id,
 			rating
@@ -116,7 +121,7 @@ const PlaySamplePage = ({ route, navigation }) => {
 						ref={ref => (webRef.current = ref)}
 						originWhitelist={['*']}
 						source={{
-							uri: 'https://comp2140.uqcloud.net/static/samples/index.html',
+							uri: utils.PLAY_TONE_URL,
 						}}
 						pullToRefreshEnabled={true}
 						onLoad={webLoaded}
@@ -124,14 +129,13 @@ const PlaySamplePage = ({ route, navigation }) => {
 				) : null}
 			</View>
 
-			<TouchableOpacity
+			<ActiveBtn
 				onPress={handleWebActionPress}
-				style={styles.playButton}
-			>
-				<Text style={{ color: colors[mode].bgColor, fontWeight: 'bold' }}>
-					{webState.actioned ? 'Stop Music' : 'Play Music'}
-				</Text>
-			</TouchableOpacity>
+				text={webState.actioned ? 'Stop Music' : 'Play Music'}
+				touchableStyles={styles.playButton}
+				textStyles={{ fontWeight: 'bold' }}
+			/>
+
 			<Rating
 				style={styles.ratingComponentAdjustable}
 				type="custom"

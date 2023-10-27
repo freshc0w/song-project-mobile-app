@@ -2,7 +2,6 @@ import { Text } from 'react-native';
 import { colors, mode } from '../styles/styles';
 
 const ErrorText = ({ condition, text, addedStyles }) => {
-  console.log("showing error", condition)
 	return (
 		<>
 			{condition ? (
