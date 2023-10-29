@@ -1,7 +1,16 @@
 import { Text, TouchableOpacity } from 'react-native';
 import { colors, mode } from '../styles/styles';
 
-const ActiveBtn = ({ onPress, text,touchableStyles, textStyles }) => {
+/**
+ * A helper component to display an active button.
+ *
+ * @param {Function} onPress A function to execute when the button is pressed
+ * @param {String} text The text to display on the button
+ * @param {Object} touchableStyles Additional styles to add to the button
+ * @param {Object} textStyles Additional styles to add to the text
+ * @returns {JSX.Element}
+ */
+const ActiveBtn = ({ onPress, text, touchableStyles, textStyles }) => {
 	return (
 		<TouchableOpacity
 			style={{ ...touchableStyles }}

@@ -1,13 +1,19 @@
 import { SafeAreaView, Image, Text } from 'react-native';
-import { styles, additionalStyles } from '../styles/styles';
+import { additionalStyles } from '../styles/styles';
 import { getIcons } from '../config/baseConfig';
 
+/**
+ * Displays a user's profile picture and associated username.
+ *
+ * @param {String} profilePic Profile picture uri
+ * @param {String} userName User's name
+ * @returns {JSX.Element}
+ */
 const UserContainer = ({ profilePic, userName }) => {
 	return (
 		<SafeAreaView style={additionalStyles.currentLocationStatusUserContainer}>
 			<Image
 				style={additionalStyles.userContainerImg}
-				// style={styles.photoFullImage}
 				source={profilePic ? { uri: profilePic } : getIcons().iconSmiley}
 				resizeMode="cover"
 			/>

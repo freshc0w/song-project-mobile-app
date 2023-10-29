@@ -2,16 +2,12 @@ import { View } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { useEffect, useState } from 'react';
 import * as Location from 'expo-location';
-
-import {
-	isDark,
-	darkMapStyle,
-	additionalStyles,
-} from '../styles/styles';
 import { findNearest, isPointWithinRadius } from 'geolib';
 
-import locationsServices from '../services/locations';
+import { isDark, darkMapStyle, additionalStyles } from '../styles/styles';
+
 import DisplayAllLocations from '../components/DisplayAllLocations';
+import locationsServices from '../services/locations';
 
 /**
  * Map page of the app. Displays a map with a circle with a radius of 100m
@@ -27,8 +23,9 @@ const MapPage = ({ setNearbyMusic }) => {
 		locationPermission: false,
 		locations: [],
 		userLocation: {
-			latitude: 0,
-			longitude: 0,
+			// Begin at Mount Gravatt Tafe
+			latitude: -27.526065,
+			longitude: 153.0909823,
 		},
 		nearestLocation: null,
 	};
@@ -152,7 +149,7 @@ const MapPage = ({ setNearbyMusic }) => {
 			return () => {
 				if (subscription) {
 					subscription.then(res => {
-						console.info('Cleaning up ==> Removing Subscription..');
+						console.info('Cleaning up Effect ==> Removing Subscription..');
 						return res.remove();
 					});
 				}

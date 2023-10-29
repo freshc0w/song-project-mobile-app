@@ -2,6 +2,13 @@ import { View, Text, Image } from 'react-native';
 import { styles, isDark } from '../styles/styles';
 import { getIcons } from '../config/baseConfig';
 
+/**
+ * Header component that houses the location name.
+ * If no location name is provided, it will display an anticipatory message.
+ *
+ * @param {String} locationName Name of a specific location
+ * @returns {JSX.Element}
+ */
 const NearbyAndPlayHeader = ({ locationName }) => {
 	return (
 		<View style={styles.location}>
@@ -16,9 +23,6 @@ const NearbyAndPlayHeader = ({ locationName }) => {
 					? locationName
 					: 'Not near any locations with valid song samples'}
 			</Text>
-			{/* <Text style={styles.locationHeading}>
-				{route.params.nearbyMusic.location}
-			</Text> */}
 		</View>
 	);
 };
