@@ -1,3 +1,4 @@
+// Constant variables used throughout the app
 const API_KEY = 'ye8GgonQrk';
 const BASE_URL = 'https://comp2140.uqcloud.net/api/';
 const NOT_CLOSE_TO_LOCATION_MSG =

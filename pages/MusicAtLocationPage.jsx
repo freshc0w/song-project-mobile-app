@@ -1,13 +1,15 @@
-import { Text, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
-import { styles, colors, mode } from '../styles/styles';
-import utils from '../config/utils';
-import SongSampleContainer from '../components/SongSampleContainer';
-import NearbyAndPlayHeader from '../components/NearbyAndPlayHeader';
-import ErrorText from '../components/ErrorText';
+import { SafeAreaView } from 'react-native';
 import { useState, useEffect } from 'react';
-import sampleToLocationsService from '../services/sampleToLocations';
-import ratingsService from '../services/ratings';
+import utils from '../config/utils';
+
+import { styles } from '../styles/styles';
+
+import ErrorText from '../components/ErrorText';
+import NearbyAndPlayHeader from '../components/NearbyAndPlayHeader';
 import MusicSamplesList from '../components/MusicSamplesList';
+
+import ratingsService from '../services/ratings';
+import sampleToLocationsService from '../services/sampleToLocations';
 
 /**
  * Displays a list of music samples at a location.
@@ -37,28 +39,6 @@ const MusicAtLocationPage = ({ nearbyMusic, navigation }) => {
 			nearbyMusic,
 			currSongSample,
 		});
-	};
-
-	/**
-	 * Helper function to calculate the average rating of a sample.
-	 *
-	 * @param {Array} ratings A collection of ratings
-	 * @param {String} sampleId A sample's id
-	 * @returns {Number}
-	 */
-	const calcAvgRating = (ratings, sampleId) => {
-		const sampleRatings = ratings.filter(
-			rating => rating.sample_id === sampleId
-		);
-
-		if (!sampleRatings.length) return 0;
-
-		const ratingsSum = sampleRatings.reduce(
-			(sum, rating) => sum + rating.rating,
-			0
-		);
-
-		return ratingsSum / sampleRatings.length;
 	};
 
 	useEffect(() => {
@@ -97,18 +77,19 @@ const MusicAtLocationPage = ({ nearbyMusic, navigation }) => {
 			<NearbyAndPlayHeader
 				locationName={!nearbyMusic ? null : nearbyMusic.name}
 			/>
-			{/* Show anticipatory page with message */}
+			{/* Show anticipatory page with message if not near any locations
+        or no music samples at current location. */}
 			<ErrorText
-				condition={!nearbyMusic}
+				condition={!nearbyMusic || !sampleList.length}
 				text={utils.NOT_CLOSE_TO_LOCATION_MSG}
 			/>
 
-      <MusicSamplesList 
-        musicSamples={sampleList}
-        handleSamplePress={handleSamplePress}
-        nearbyMusic={nearbyMusic}
-        ratingsList={ratingsList}
-      />
+			<MusicSamplesList
+				musicSamples={sampleList}
+				handleSamplePress={handleSamplePress}
+				nearbyMusic={nearbyMusic}
+				ratingsList={ratingsList}
+			/>
 		</SafeAreaView>
 	);
 };

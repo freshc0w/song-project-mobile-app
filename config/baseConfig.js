@@ -1,10 +1,14 @@
 import { Image, View, Text } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { colors, styles, isDark } from '../styles/styles';
+import { colors, isDark } from '../styles/styles';
 import MapPage from '../pages/MapPage';
 import ProfilePage from '../pages/ProfilePage';
 import MusicAtLocationPage from '../pages/MusicAtLocationPage';
 
+/**
+ * Helper function to get all the icons used in the application.
+ *
+ * @returns {Object} An object containing all the icons used in the application
+ */
 export const getIcons = () => {
 	return {
 		Profile: require('../assets/tab-profile-white.png'),
@@ -18,14 +22,16 @@ export const getIcons = () => {
 	};
 };
 
-export const allTabs = {
-	Map: <MapPage />,
-	'Music At Location': <MusicAtLocationPage />,
-	Profile: <ProfilePage />,
-};
-
+/**
+ * Configures the tab bar options for each tab. Mainly used for icons
+ * implementations.
+ *
+ * @param {String} iconSrc The icon source to be used
+ * @param {Boolean} middle Checks if it is the middle tab
+ * @param {Object} nearbyMusic Nearby music infotmation state
+ * @returns {Object} An object containing the icon to be used in the tab bar
+ */
 export const tabBarOptions = (iconSrc, middle, nearbyMusic) => {
-	middle && console.log('NEARBY MUSIC:', nearbyMusic);
 	return {
 		tabBarIcon: ({ size, focused, color }) => {
 			return (
@@ -48,6 +54,8 @@ export const tabBarOptions = (iconSrc, middle, nearbyMusic) => {
 						}}
 						source={iconSrc}
 					/>
+					{/* Display "Music nearby" message if there is a nearby locations 
+              with music samples */}
 					{middle && nearbyMusic && (
 						<Text
 							style={{
