@@ -1,4 +1,5 @@
-// DISCLAIMER: Code may be similiar or copied from my A2 submission for COMP2140.
+// DISCLAIMER: Code may be similiar or copied from my own
+// A2 submission for COMP2140.
 import utils from '../config/utils';
 
 /**

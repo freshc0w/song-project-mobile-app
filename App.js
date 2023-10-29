@@ -15,11 +15,19 @@ import locationServices from './services/locations';
  * @returns {JSX.Element}
  */
 const App = () => {
+	// Tracks the nearest location with music samples
 	const [nearbyMusic, setNearbyMusic] = useState(null);
+
+	// Tracks the user's profile information if entered in the profile page
 	const [profile, setProfile] = useState({ name: null, profilePic: null });
+
+	// Location collection fetched from api
 	const [locations, setLocations] = useState([]);
 
 	useEffect(() => {
+		/**
+		 * Fetches all location and sets the locations state.
+		 */
 		const fetchLocations = async () => {
 			const data = await locationServices.getLocations();
 			setLocations(data);

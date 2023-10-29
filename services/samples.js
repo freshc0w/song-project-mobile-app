@@ -1,4 +1,5 @@
 // DISCLAIMER: GITHUB COPILOT WAS USED TO HELP WITH THIS FILE
+// Code may be similiar or copied from my A2 submission for COMP2140.
 import utils from '../config/utils';
 
 /**

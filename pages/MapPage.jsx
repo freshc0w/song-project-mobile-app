@@ -1,15 +1,21 @@
 import { View } from 'react-native';
-import MapView, { Circle, PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { useEffect, useState } from 'react';
 import * as Location from 'expo-location';
 
-import { isDark, darkMapStyle, additionalStyles } from '../styles/styles';
+import {
+	isDark,
+	darkMapStyle,
+	additionalStyles,
+} from '../styles/styles';
 import { findNearest, isPointWithinRadius } from 'geolib';
 
 import locationsServices from '../services/locations';
+import DisplayAllLocations from '../components/DisplayAllLocations';
 
 /**
- * Map page of the app. Displays a map with a circle with a radius of 100m around each location listed in the api.
+ * Map page of the app. Displays a map with a circle with a radius of 100m
+ * around each location listed in the api.
  *
  * @param {Function} setNearbyMusic Handles setting the nearby music global state
  * @returns {JSX.Element}
@@ -21,10 +27,8 @@ const MapPage = ({ setNearbyMusic }) => {
 		locationPermission: false,
 		locations: [],
 		userLocation: {
-			// TODO: change this
-			latitude: -27.5263381,
-			longitude: 153.0954163,
-			// Starts at "Indooroopilly Shopping Centre"
+			latitude: 0,
+			longitude: 0,
 		},
 		nearestLocation: null,
 	};
@@ -33,6 +37,11 @@ const MapPage = ({ setNearbyMusic }) => {
 
 	// Request user permission
 	useEffect(() => {
+		/**
+		 * Requests user permission to access their location.
+		 *
+		 * If permission is granted, set mapstate's locationPermission to true.
+		 */
 		const reqPermission = async () => {
 			const { status } = await Location.requestForegroundPermissionsAsync();
 			status === 'granted' &&
@@ -45,8 +54,13 @@ const MapPage = ({ setNearbyMusic }) => {
 	}, []);
 
 	useEffect(() => {
+		/**
+		 * Fetches all locations from the api and sets it to the mapstate.
+		 */
 		const fetchLocations = async () => {
 			const locations = await locationsServices.getLocations();
+
+			// Format the location to include coords formatted as numbers
 			const formattedLocations = locations
 				.filter(location => location.sharing)
 				.map(location => {
@@ -57,6 +71,8 @@ const MapPage = ({ setNearbyMusic }) => {
 
 					return location;
 				});
+
+			// Set local state
 			setMapState(mapState => {
 				return {
 					...mapState,
@@ -64,10 +80,17 @@ const MapPage = ({ setNearbyMusic }) => {
 				};
 			});
 		};
+
 		fetchLocations();
 	}, []);
 
-	// find available locations
+	/**
+	 * Finds all locations within the radius of the user's location.
+	 *
+	 * @param {Object} userLocation User's location in latitude and longitude
+	 * @param {Number} radius Determines the radius of the detection circle
+	 * @returns {Array} An array of locations within the radius
+	 */
 	const findViableLocations = (userLocation, radius) => {
 		const locationsWithinRange = mapState.locations.filter(location =>
 			isPointWithinRadius(location.coords, userLocation, radius)
@@ -75,8 +98,15 @@ const MapPage = ({ setNearbyMusic }) => {
 		return locationsWithinRange;
 	};
 
+	/**
+	 * Finds the nearest location in respect to the user's location.
+	 *
+	 * @param {Object} userLocation User's location in latitude and longitude
+	 * @param {Array} viableLocations Array of locations found within a
+	 *  specified radius
+	 * @returns {Object} The nearest location to the user
+	 */
 	const findNearestLocation = (userLocation, viableLocations) => {
-		// if (!viableLocations.length) return null;
 		const nearestCoords = findNearest(
 			userLocation,
 			viableLocations.map(location => location.coords)
@@ -103,16 +133,11 @@ const MapPage = ({ setNearbyMusic }) => {
 						latitude: location.coords.latitude,
 						longitude: location.coords.longitude,
 					};
-					// * TEMPORARY
-					// const userLocation = {
-					// 	latitude: mapState?.locations[1].latitude,
-					// 	longitude: mapState?.locations[1].longitude,
-					// };
 					const nearestLocation = findNearestLocation(
 						userLocation,
 						findViableLocations(userLocation, CHECK_LOCATION_RADIUS)
 					);
-					// update map state
+					// update map state of user's and nearest location
 					setMapState(mapState => {
 						return {
 							...mapState,
@@ -122,10 +147,12 @@ const MapPage = ({ setNearbyMusic }) => {
 					});
 				}
 			);
+
+			// Clean up function
 			return () => {
 				if (subscription) {
 					subscription.then(res => {
-						console.log('Cleaning up: Removing Subscription..');
+						console.info('Cleaning up ==> Removing Subscription..');
 						return res.remove();
 					});
 				}
@@ -147,17 +174,10 @@ const MapPage = ({ setNearbyMusic }) => {
 				provider={PROVIDER_GOOGLE}
 				customMapStyle={isDark ? darkMapStyle : null}
 			>
-				{/* // TODO: CHANGE CIRCLE CONFIGURATION */}
-				{mapState.locations.map(location => (
-					<Circle
-						key={location.id}
-						center={location.coords}
-						radius={CHECK_LOCATION_RADIUS}
-						strokeWidth={3}
-						strokeColor="#A42DE8"
-						fillColor={isDark ? 'rgba(128,0,128,0.5)' : 'rgba(210,169,210,0.5)'}
-					/>
-				))}
+				<DisplayAllLocations
+					locationsList={mapState.locations}
+					checkRadius={CHECK_LOCATION_RADIUS}
+				/>
 			</MapView>
 		</View>
 	);

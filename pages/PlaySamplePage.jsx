@@ -29,6 +29,9 @@ import ratingsService from '../services/ratings';
  * @returns {JSX.Element}
  */
 const PlaySamplePage = ({ route, navigation }) => {
+	// For webview to work, we need to use a state variable to track if the
+	// navigation has transitioned. This is because the webview will not load
+	// if it is not visible on the screen.
 	const [hasNavigationTransitioned, setHasNavigationTransitioned] =
 		useState(false);
 	const [webState, setWebState] = useState({
@@ -36,8 +39,14 @@ const PlaySamplePage = ({ route, navigation }) => {
 		actioned: false,
 	});
 
+	// Tracks if the user has rated the song at least once already
 	const [hasRated, setHasRated] = useState(false);
+
+	// Tracks the user's current rating of the song
 	const [currRating, setCurrRating] = useState(null);
+
+	// True if an error arises when switching between pages, requiring a reload
+	// of the page to play the song
 	const [reloadErr, setReloadErr] = useState(false);
 
 	const { nearbyMusic, currProfile, currSongSample } = route.params;
@@ -59,13 +68,16 @@ const PlaySamplePage = ({ route, navigation }) => {
 		[navigation, setHasNavigationTransitioned]
 	);
 
-	const webLoaded = () => {
-		setWebState({
-			...webState,
-			loaded: true,
-		});
-	};
-
+	/**
+	 * Stringifies JS code to play the song.
+	 *
+	 * This is necessary because the song data is retrieved from the API as an
+	 * object, and we need to pass it into the WebView as a string.
+	 *
+	 * @param {Object} songData Song recording data retrieved from api
+	 * @param {String} songType Song type (e.g. 'Guitar')
+	 * @returns {String} Stringified JS code to play the song
+	 */
 	const stringifiedPlaySong = (songData, songType) => {
 		const strJsCode = `function playSong() {
             songData = JSON.parse(${JSON.stringify(songData)});
@@ -77,9 +89,16 @@ const PlaySamplePage = ({ route, navigation }) => {
 		return strJsCode;
 	};
 
+	/**
+	 * Handles the user's request to play or stop the song.
+	 *
+	 * Song data and instrument type is based on the retrieved api data.
+	 */
 	const handleWebActionPress = () => {
+		if (!webState.loaded) return;
 		if (!webRef.current) return setReloadErr(true);
 
+    // If the song is not recorded, play the default song given by the uri
 		if (!currSongSample.recording_data) {
 			webRef.current.injectJavaScript(
 				!webState.actioned ? 'playSong()' : 'stopSong()'
@@ -100,8 +119,15 @@ const PlaySamplePage = ({ route, navigation }) => {
 		});
 	};
 
+	/**
+	 * Creates or updates the user's rating of the song based on the Ratings
+	 * component.
+	 *
+	 * @param {Number} rating Rating value of the song
+	 * @returns {Number} Newly created or updated rating value
+	 */
 	const handleRatingChange = async rating => {
-		// If user hasn't rated yet, post rating
+		// If user hasn't rated yet, POST rating
 		if (!hasRated) {
 			const createdRating = await ratingsService.createRating(
 				currSongSample.id,
@@ -111,6 +137,7 @@ const PlaySamplePage = ({ route, navigation }) => {
 			return createdRating;
 		}
 
+		// Otherwise, PUT rating
 		const updatedRating = await ratingsService.editRating(
 			currRating.id,
 			rating
@@ -124,8 +151,10 @@ const PlaySamplePage = ({ route, navigation }) => {
 				locationName={!nearbyMusic ? null : nearbyMusic.name}
 			/>
 			<Text style={styles.songName}>{currSongSample.name}</Text>
+
+			{/* WebView will only load after page has completed transition */}
 			<View>
-				{hasNavigationTransitioned ? (
+				{hasNavigationTransitioned && (
 					<WebView
 						ref={ref => (webRef.current = ref)}
 						originWhitelist={['*']}
@@ -133,9 +162,14 @@ const PlaySamplePage = ({ route, navigation }) => {
 							uri: utils.PLAY_TONE_URL,
 						}}
 						pullToRefreshEnabled={true}
-						onLoad={webLoaded}
+						onLoad={() =>
+							setWebState({
+								...webState,
+								loaded: true,
+							})
+						}
 					/>
-				) : null}
+				)}
 			</View>
 
 			<ActiveBtn
@@ -156,9 +190,15 @@ const PlaySamplePage = ({ route, navigation }) => {
 				onFinishRating={handleRatingChange}
 			/>
 
+			{/* Pop up msg will be displayed to illustrate if WebView has loaded
+          yet OR if the page needs to be exited for music to play */}
 			<ErrorText
-				condition={reloadErr}
-				text={utils.RELOAD_TO_PLAY_MSG}
+				condition={!webState.loaded || reloadErr}
+				text={
+					!webState.loaded
+						? utils.WEBVIEW_NOT_LOADED_MSG
+						: utils.RELOAD_TO_PLAY_MSG
+				}
 				addedStyles={{ marginTop: 10, textAlign: 'center' }}
 			/>
 
@@ -168,7 +208,7 @@ const PlaySamplePage = ({ route, navigation }) => {
 				</Text>
 				<UserContainer
 					profilePic={currProfile.profilePic}
-					userName={currProfile.name || 'Create your profile and add a name!'}
+					userName={currProfile.name || 'Add a name in the profile page.'}
 				/>
 				<UserContainer />
 			</View>

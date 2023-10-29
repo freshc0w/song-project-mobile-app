@@ -1,3 +1,4 @@
+// DISCLAIMER: GITHUB COPILOT WAS USED TO HELP WITH THIS FILE
 import { Text, View, TextInput, KeyboardAvoidingView } from 'react-native';
 import { useState, useEffect } from 'react';
 import * as ImagePicker from 'expo-image-picker';
@@ -9,21 +10,33 @@ import ActiveBtn from '../components/ActiveBtn';
 /**
  * Profile page of the app. Allows user to edit their profile picture and name.
  *
- * @param {Object} currProfile Current profile data containing name and profile picture uri.
- * @param {Function} handleSetProfile Function to update global state with new profile data.
+ * Obtains the current profile information from global state.
+ * If none is found, it will be set to default values.
+ *
+ * @param {Object} currProfile Current profile data containing name
+ *  and profile picture uri.
+ * @param {Function} handleSetProfile Function to update global state
+ *  with new profile data.
  * @returns {JSX.Element}
  */
 const ProfilePage = ({ currProfile, handleSetProfile }) => {
+	// Stores the photo's info with uri included.
 	const [photo, setPhoto] = useState({});
+
+	// Stores the user's inputted name.
 	const [profileName, setProfileName] = useState('');
 
 	useEffect(() => {
+		// Set or update global profile name state with concurrent input
 		handleSetProfile({
 			...currProfile,
 			name: profileName,
 		});
 	}, [profileName]);
 
+	/**
+	 * Handles the user's request to change their profile picture.
+	 */
 	const handleChangePhotoPress = async () => {
 		const result = await ImagePicker.launchImageLibraryAsync({
 			mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -31,6 +44,7 @@ const ProfilePage = ({ currProfile, handleSetProfile }) => {
 			quality: 1,
 		});
 
+		// If user selected a photo, update global state and local state
 		if (
 			!result.canceled &&
 			result.assets &&
@@ -58,6 +72,7 @@ const ProfilePage = ({ currProfile, handleSetProfile }) => {
 
 			<PhotoContainer photo={photo} />
 
+			{/* Styles and text of button depends if the user has selected a photo */}
 			{!photo.uri ? (
 				<ActiveBtn
 					onPress={handleChangePhotoPress}

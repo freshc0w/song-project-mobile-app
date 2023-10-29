@@ -5,7 +5,6 @@ import { Appearance, StyleSheet, Dimensions } from 'react-native';
 export const mode = Appearance.getColorScheme() === 'dark' ? 'dark' : 'light';
 export const isDark = mode === 'dark';
 
-const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 
 // Light and Dark colour schemes
@@ -35,7 +34,6 @@ export const styles = {
 	nearbyAndPlayContainer: {
 		flex: 1,
 		flexDirection: 'column',
-		// ? justifyContent: 'space-between',
 		padding: 10,
 		backgroundColor: colors[mode].bgColor,
 	},
@@ -170,7 +168,6 @@ export const additionalStyles = StyleSheet.create({
 		borderBottomWidth: 1,
 		display: 'flex',
 		flexDirection: 'row',
-		// justifyContent: 'center',
 		alignItems: 'center',
 		padding: 5,
 		paddingTop: 0,
