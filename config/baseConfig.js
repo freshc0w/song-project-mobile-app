@@ -1,8 +1,5 @@
 import { Image, View, Text } from 'react-native';
 import { colors, isDark } from '../styles/styles';
-import MapPage from '../pages/MapPage';
-import ProfilePage from '../pages/ProfilePage';
-import MusicAtLocationPage from '../pages/MusicAtLocationPage';
 
 /**
  * Helper function to get all the icons used in the application.

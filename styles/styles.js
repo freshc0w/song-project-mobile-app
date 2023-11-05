@@ -209,6 +209,8 @@ export const additionalStyles = StyleSheet.create({
 	webViewContainer: {},
 });
 
+// Retrieved from official google maps styling api.
+// Link: https://mapstyle.withgoogle.com/
 export const darkMapStyle = [
 	{
 		elementType: 'geometry',
