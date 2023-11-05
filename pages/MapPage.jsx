@@ -59,7 +59,7 @@ const MapPage = ({ setNearbyMusic }) => {
 
 			// Format the location to include coords formatted as numbers
 			const formattedLocations = locations
-				.filter(location => location.sharing)
+				.filter(location => location.sharing) // Only display locations to be shared
 				.map(location => {
 					location.coords = {
 						latitude: parseFloat(location.latitude),
@@ -88,12 +88,12 @@ const MapPage = ({ setNearbyMusic }) => {
 	 * @param {Number} radius Determines the radius of the detection circle
 	 * @returns {Array} An array of locations within the radius
 	 */
-	const findViableLocations = (userLocation, radius) => {
-		const locationsWithinRange = mapState.locations.filter(location =>
+	const findViableLocations = (userLocation, radius) =>
+		mapState.locations.filter(location =>
+			// isPointWithinRadius is a geolib function that checks if a point is
+			// within a radius of another point
 			isPointWithinRadius(location.coords, userLocation, radius)
 		);
-		return locationsWithinRange;
-	};
 
 	/**
 	 * Finds the nearest location in respect to the user's location.
@@ -126,10 +126,9 @@ const MapPage = ({ setNearbyMusic }) => {
 					distanceInterval: 10, // 10m
 				},
 				location => {
-					const userLocation = {
-						latitude: location.coords.latitude,
-						longitude: location.coords.longitude,
-					};
+          // Destructure to obtain user's coords
+					const { latitude, longitude } = location.coords;
+					const userLocation = { latitude, longitude };
 					const nearestLocation = findNearestLocation(
 						userLocation,
 						findViableLocations(userLocation, CHECK_LOCATION_RADIUS)

@@ -187,7 +187,6 @@ export const additionalStyles = StyleSheet.create({
 		fontSize: 16,
 		fontWeight: 'bold',
 		color: colors[mode].fgColor,
-		// paddingBottom: 6,
 	},
 	currentLocationStatusUserContainer: {
 		flexDirection: 'row',
@@ -210,7 +209,7 @@ export const additionalStyles = StyleSheet.create({
 });
 
 // Retrieved from official google maps styling api.
-// Link: https://mapstyle.withgoogle.com/
+// Source Link: https://mapstyle.withgoogle.com/
 export const darkMapStyle = [
 	{
 		elementType: 'geometry',
