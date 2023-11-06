@@ -1,2 +1,2 @@
 Platform: Android
-Developed on Expo Go.
+Emulator: Developed on Expo Go

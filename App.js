@@ -28,12 +28,12 @@ const App = () => {
 		/**
 		 * Fetches all location and sets the locations state.
 		 */
-		const fetchLocations = async () => {
+		const fetchAllLocations = async () => {
 			const data = await locationServices.getLocations();
 			setLocations(data);
 		};
 
-		fetchLocations();
+		fetchAllLocations();
 	}, []);
 
 	return (

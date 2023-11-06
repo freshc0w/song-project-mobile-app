@@ -1,3 +1,4 @@
+// DISCLAIMER: GITHUB COPILOT WAS USED TO HELP WITH THIS FILE
 import { View } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { useEffect, useState } from 'react';

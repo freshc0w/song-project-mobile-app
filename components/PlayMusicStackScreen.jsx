@@ -1,3 +1,4 @@
+// DISCLAIMER: GITHUB COPILOT WAS USED TO HELP WITH THIS FILE
 import { createStackNavigator } from '@react-navigation/stack';
 import PlaySamplePage from '../pages/PlaySamplePage';
 import MusicAtLocationPage from '../pages/MusicAtLocationPage';

@@ -1,3 +1,4 @@
+// DISCLAIMER: GITHUB COPILOT WAS USED TO HELP WITH THIS FILE
 import { Image, View, Text } from 'react-native';
 import { colors, isDark } from '../styles/styles';
 

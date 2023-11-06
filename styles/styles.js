@@ -1,3 +1,4 @@
+// DISCLAIMER: GITHUB COPILOT WAS USED TO HELP WITH THIS FILE
 import { Appearance, StyleSheet, Dimensions } from 'react-native';
 
 // Light or Dark mode
@@ -208,7 +209,7 @@ export const additionalStyles = StyleSheet.create({
 	webViewContainer: {},
 });
 
-// Retrieved from official google maps styling api.
+// Dark Map style retrieved from official google maps styling api.
 // Source Link: https://mapstyle.withgoogle.com/
 export const darkMapStyle = [
 	{

@@ -1,3 +1,4 @@
+// DISCLAIMER: GITHUB COPILOT WAS USED TO HELP WITH THIS FILE
 import { SafeAreaView, Text, View } from 'react-native';
 import { useState, useEffect, useRef } from 'react';
 import { WebView } from 'react-native-webview';
@@ -52,6 +53,8 @@ const PlaySamplePage = ({ route, navigation }) => {
 	const { nearbyMusic, currProfile, currSongSample } = route.params;
 	const webRef = useRef();
 
+  // Used to fix WebView crashing when wrapped by a View. Obtained from BDDev.
+  // Link: https://github.com/react-native-webview/react-native-webview/issues/811
 	useEffect(
 		() =>
 			navigation.addListener('transitionEnd', () => {

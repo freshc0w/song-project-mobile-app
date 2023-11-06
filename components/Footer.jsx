@@ -1,3 +1,4 @@
+// DISCLAIMER: GITHUB COPILOT WAS USED TO HELP WITH THIS FILE
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { colors } from '../styles/styles';
 import { LinearGradient } from 'expo-linear-gradient';

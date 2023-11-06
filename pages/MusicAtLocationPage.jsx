@@ -1,3 +1,4 @@
+// DISCLAIMER: GITHUB COPILOT WAS USED TO HELP WITH THIS FILE
 import { SafeAreaView } from 'react-native';
 import { useState, useEffect } from 'react';
 import utils from '../config/utils';
@@ -71,7 +72,6 @@ const MusicAtLocationPage = ({ nearbyMusic, navigation }) => {
 		fetchRatings();
 	}, [nearbyMusic]);
 
-	// Passed the NEARBY MUSIC PARAMS
 	return (
 		<SafeAreaView style={styles.nearbyAndPlayContainer}>
 			<NearbyAndPlayHeader

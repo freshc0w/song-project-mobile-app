@@ -1,3 +1,4 @@
+// DISCLAIMER: GITHUB COPILOT WAS USED TO HELP WITH THIS FILE
 import { SafeAreaView, Image, Text } from 'react-native';
 import { additionalStyles } from '../styles/styles';
 import { getIcons } from '../config/baseConfig';
@@ -14,6 +15,7 @@ const UserContainer = ({ profilePic, userName }) => {
 		<SafeAreaView style={additionalStyles.currentLocationStatusUserContainer}>
 			<Image
 				style={additionalStyles.userContainerImg}
+        // Smiley icon as placeholder img
 				source={profilePic ? { uri: profilePic } : getIcons().iconSmiley}
 				resizeMode="cover"
 			/>

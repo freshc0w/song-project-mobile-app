@@ -1,3 +1,4 @@
+// DISCLAIMER: GITHUB COPILOT WAS USED TO HELP WITH THIS FILE
 import { ScrollView } from 'react-native';
 import SongSampleContainer from './SongSampleContainer';
 

@@ -1,3 +1,4 @@
+// DISCLAIMER: GITHUB COPILOT WAS USED TO HELP WITH THIS FILE
 import { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Rating } from 'react-native-ratings';
